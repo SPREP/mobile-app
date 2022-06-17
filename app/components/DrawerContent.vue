@@ -11,38 +11,37 @@
                 <GridLayout columns="auto, *"
                             :class="'nt-drawer__list-item' + (selectedPage === 'Home' ? ' -selected': '')"
                             @tap="onNavigationItemTap(Home)">
-                    <Label col="0" text.decode="&#xf015;" class="nt-icon fas"/>
-                    <Label col="1" text="Home" class="p-r-10"/>
+                    <Label col="0" text.decode="&#xf015;" class="h3 nt-icon fas"/>
+                    <Label col="1" text="Home" class="h3 p-r-10"/>
                 </GridLayout>
 
                 <GridLayout columns="auto, *"
-                            :class="'nt-drawer__list-item' + (selectedPage === 'Browse' ? ' -selected': '')"
-                            @tap="onNavigationItemTap(Browse)">
-                    <Label col="0" text.decode="&#xf1ea;" class="nt-icon far"/>
-                    <Label col="1" text="Browse" class="p-r-10"/>
+                            :class="'nt-drawer__list-item' + (selectedPage === 'Calendar' ? ' -selected': '')"
+                            @tap="onNavigationItemTap(Calendar)">
+                    <Label col="0" text.decode="&#xf1ea;" class="h3 nt-icon far"/>
+                    <Label col="1" text="Calendar" class="h3 p-r-10"/>
                 </GridLayout>
-
                 <GridLayout columns="auto, *"
                             :class="'nt-drawer__list-item' + (selectedPage === 'Search' ? ' -selected': '')"
                             @tap="onNavigationItemTap(Search)">
                     <Label col="0" text.decode="&#xf002;" class="nt-icon fas"/>
-                    <Label col="1" text="Search" class="p-r-10"/>
+                    <Label col="1" text="Map" class="h3 p-r-10"/>
                 </GridLayout>
-
+<!--                
                 <GridLayout columns="auto, *"
-                            :class="'nt-drawer__list-item' + (selectedPage === 'Featured' ? ' -selected': '')"
-                            @tap="onNavigationItemTap(Featured)">
-                    <Label col="0" text.decode="&#xf005;" class="nt-icon fas"/>
-                    <Label col="1" text="Featured" class="p-r-10"/>
+                            :class="'nt-drawer__list-item' + (selectedPage === 'Map' ? ' -selected': '')"
+                            @tap="onNavigationItemTap(Map)">
+                    <Label col="0" text.decode="&#xf005;" class="h3 nt-icon fas"/>
+                    <Label col="1" text="Maps" class="h3 p-r-10"/>
                 </GridLayout>
-
+-->
                 <StackLayout class="hr"/>
 
                 <GridLayout columns="auto, *"
                             :class="'nt-drawer__list-item' + (selectedPage === 'Settings' ? ' -selected': '')"
                             @tap="onNavigationItemTap(Settings)">
-                    <Label col="0" text.decode="&#xf013;" class="nt-icon fas"/>
-                    <Label col="1" text="Settings" class="p-r-10"/>
+                    <Label col="0" text.decode="&#xf013;" class="h3 nt-icon fas"/>
+                    <Label col="1" text="Settings" class="h3 p-r-10"/>
                 </GridLayout>
             </StackLayout>
         </ScrollView>
@@ -51,8 +50,8 @@
 
 <script>
   import Home from "./Home";
-  import Browse from "./Browse";
-  import Featured from "./Featured";
+  import Calendar from "./Calendar";
+  import Map from "./Map";
   import Search from "./Search";
   import Settings from "./Settings";
   import * as utils from "~/shared/utils";
@@ -66,8 +65,8 @@
     data() {
       return {
         Home: Home,
-        Browse: Browse,
-        Featured: Featured,
+        Calendar: Calendar,
+        Map: Map,
         Search: Search,
         Settings: Settings,
         selectedPage: ""
@@ -75,8 +74,8 @@
     },
     components: {
       Home,
-      Browse,
-      Featured,
+      Calendar,
+      Map,
       Search,
       Settings
     },

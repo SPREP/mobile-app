@@ -3,7 +3,7 @@
       <ActionBar class="action-bar">
         <NavigationButton visibility="hidden"/>
         <GridLayout columns="50, *">
-          <Label class="action-bar-title" text="Featured" colSpan="2"/>
+          <Label class="action-bar-title h2" text="Map" colSpan="2"/>
 
           <Label class="fas" text.decode="&#xf0c9;" @tap="onDrawerButtonTap"/>
         </GridLayout>
@@ -22,7 +22,7 @@
 
   export default {
     mounted() {
-      SelectedPageService.getInstance().updateSelectedPage("Featured");
+      SelectedPageService.getInstance().updateSelectedPage("Map");
     },
     computed: {
       message() {
