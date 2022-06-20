@@ -8,32 +8,34 @@
 
         <ScrollView row="1" class="nt-drawer__body">
             <StackLayout>
-                <GridLayout columns="auto, *"
-                            :class="'nt-drawer__list-item' + (selectedPage === 'Home' ? ' -selected': '')"
-                            @tap="onNavigationItemTap(Home)">
-                    <Label col="0" text.decode="&#xf015;" class="h3 nt-icon fas"/>
-                    <Label col="1" text="Home" class="h3 p-r-10"/>
-                </GridLayout>
-
+<!--
                 <GridLayout columns="auto, *"
                             :class="'nt-drawer__list-item' + (selectedPage === 'Calendar' ? ' -selected': '')"
                             @tap="onNavigationItemTap(Calendar)">
                     <Label col="0" text.decode="&#xf1ea;" class="h3 nt-icon far"/>
                     <Label col="1" text="Calendar" class="h3 p-r-10"/>
                 </GridLayout>
+-->                
                 <GridLayout columns="auto, *"
                             :class="'nt-drawer__list-item' + (selectedPage === 'Search' ? ' -selected': '')"
                             @tap="onNavigationItemTap(Search)">
-                    <Label col="0" text.decode="&#xf002;" class="nt-icon fas"/>
+                    <Label col="0" text.decode="&#xf279;" class="nt-icon fas"/>
                     <Label col="1" text="Map" class="h3 p-r-10"/>
                 </GridLayout>
                 <GridLayout columns="auto, *"
                             :class="'nt-drawer__list-item' + (selectedPage === 'Main' ? ' -selected': '')"
                             @tap="onNavigationItemTap(Main)">
-                    <Label col="0" text.decode="&#xf279;" class="h3 nt-icon fas"/>
-                    <Label col="1" text="Main" class="h3 p-r-10"/>
+                    <Label col="0" text.decode="&#xf013;" class="h3 nt-icon fas"/>
+                    <Label col="1" text="Settings" class="h3 p-r-10"/>
                 </GridLayout>
                 <StackLayout class="hr"/>
+                <GridLayout columns="auto, *"
+                            :class="'nt-drawer__list-item' + (selectedPage === 'Home' ? ' -selected': '')"
+                            @tap="onNavigationItemTap(Home)">
+                    <Label col="0" text.decode="&#xf129;" class="h3 nt-icon fas"/>
+                    <Label col="1" text="About" class="h3 p-r-10"/>
+                </GridLayout>
+<!--
 
                 <GridLayout columns="auto, *"
                             :class="'nt-drawer__list-item' + (selectedPage === 'Settings' ? ' -selected': '')"
@@ -41,6 +43,7 @@
                     <Label col="0" text.decode="&#xf013;" class="h3 nt-icon fas"/>
                     <Label col="1" text="Settings" class="h3 p-r-10"/>
                 </GridLayout>
+-->
             </StackLayout>
         </ScrollView>
     </GridLayout>

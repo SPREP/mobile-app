@@ -11,11 +11,12 @@
 
     <FlexboxLayout flexDirection="column">
 <!--      <WebView src="https://www.yahoo.com/" /> -->
-      <WebView scalesPageToFit="true" displayZoomControls="true" :src="linkTo" width="791" height="500" @loadStarted="startLoad" @loadFinished="endLoad"/>
-      <Label class="h4" :text="layer"/>
-      <Label class="h4" :text="source"/>
-      <Label class="h4" :text="wdate"/>
-      <Label class="h3 red p-r-10" backgroundColor="red" color="white" :text="msg"/>
+      <WebView scalesPageToFit="true" displayZoomControls="true" :src="linkTo" width="791" height="400" @loadStarted="startLoad" @loadFinished="endLoad"/>
+      <Label class="h4 text-center" :text="layerTitle"/>
+      <Label class="h4 text-center" :text="layer"/> 
+      <Label class="h4 text-center" :text="wdate"/>
+      <Label class="h3 text-center" backgroundColor="#fcfcfc" color="red" :text="msg"/>
+      <Button marginTop="0" height="40" class="h3 text-center" backgroundColor="blue" color="white" text="Change settings" @tap="onButtonTap" />
 
     </FlexboxLayout>
 <!--
@@ -35,6 +36,7 @@
 <script>
   import * as utils from "~/shared/utils";
   import { SelectedPageService } from "../shared/selected-page-service";
+  import Main from "./Main";
 
   const appSettings = require("@nativescript/core/application-settings");
 
@@ -43,6 +45,8 @@
       SelectedPageService.getInstance().updateSelectedPage("Search");
 
       const layer = appSettings.getString("layerName") 
+      console.log(layer)
+      const layerTitle = appSettings.getString("layerTitle") 
       const source = appSettings.getString("sourceName") 
       const wDate = appSettings.getString("wDate") 
       const wd = wDate.replace(/-/g,"")
@@ -50,6 +54,7 @@
       this.linkTo = "https://estation.jrc.ec.europa.eu/eStation2/webservices?SERVICE=WMS&REQUEST=GetMap&width=736&height=814&FORMAT=image%2Fjpg&LAYERS=" + layer + "&DATE=" + wd
       console.log(this.linkTo)
       this.layer = layer
+      this.layerTitle = layerTitle
       this.source = source
       this.wdate = wDate
       console.log(layer)
@@ -61,6 +66,7 @@
     data () {
       return {
         layer:'',
+        layerTitle: '',
         source:'',
         wdate: '',
         msg: '',
@@ -74,6 +80,16 @@
       }
     },
     methods: {
+      onNavigationItemTap(component) {
+        this.$navigateTo(component, {
+          clearHistory: true
+        });
+        utils.closeDrawer();
+      },
+      onButtonTap: function () {
+        console.log('ok')
+        this.onNavigationItemTap(Main)
+      },
       onBusyChanged: function () {
         console.log('busy changed')
       },
