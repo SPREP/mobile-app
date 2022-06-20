@@ -10,7 +10,7 @@
       </ActionBar>
 
     <GridLayout class="page__content">
-      <DatePicker v-model="selectedDate" @dateChange="dateChanged"/>
+      <DatePicker v-model="selectedDate" @dateChange="dateChanged" minDate="2022-01-01" maxDate="2023-01-31"/>
     </GridLayout>
 
 

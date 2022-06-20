@@ -27,14 +27,12 @@
                     <Label col="0" text.decode="&#xf002;" class="nt-icon fas"/>
                     <Label col="1" text="Map" class="h3 p-r-10"/>
                 </GridLayout>
-<!--                
                 <GridLayout columns="auto, *"
-                            :class="'nt-drawer__list-item' + (selectedPage === 'Map' ? ' -selected': '')"
-                            @tap="onNavigationItemTap(Map)">
-                    <Label col="0" text.decode="&#xf005;" class="h3 nt-icon fas"/>
-                    <Label col="1" text="Maps" class="h3 p-r-10"/>
+                            :class="'nt-drawer__list-item' + (selectedPage === 'Main' ? ' -selected': '')"
+                            @tap="onNavigationItemTap(Main)">
+                    <Label col="0" text.decode="&#xf279;" class="h3 nt-icon fas"/>
+                    <Label col="1" text="Main" class="h3 p-r-10"/>
                 </GridLayout>
--->
                 <StackLayout class="hr"/>
 
                 <GridLayout columns="auto, *"
@@ -51,7 +49,7 @@
 <script>
   import Home from "./Home";
   import Calendar from "./Calendar";
-  import Map from "./Map";
+  import Main from "./Main";
   import Search from "./Search";
   import Settings from "./Settings";
   import * as utils from "~/shared/utils";
@@ -66,7 +64,7 @@
       return {
         Home: Home,
         Calendar: Calendar,
-        Map: Map,
+        Main: Main,
         Search: Search,
         Settings: Settings,
         selectedPage: ""
@@ -75,7 +73,7 @@
     components: {
       Home,
       Calendar,
-      Map,
+      Main,
       Search,
       Settings
     },
