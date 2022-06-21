@@ -44,13 +44,50 @@
     mounted() {
       SelectedPageService.getInstance().updateSelectedPage("Search");
 
+      /*
+      const test = appSettings.getString("test") 
+      console.log("*** test ***")
+      console.log(test)
+      if (typeof test !== 'undefined') {
+        console.log(test)        
+      } else {
+        console.log("indefinito")
+        this.onNavigationItemTap(Main)
+        return
+      }
+      */
       const layer = appSettings.getString("layerName") 
-      console.log(layer)
+      console.log("*** layer ***")
+      if (typeof layer !== 'undefined') {
+        console.log(layer)        
+      } else {
+        console.log("indefinito")
+        this.onNavigationItemTap(Main)
+        return
+      }
+
       const layerTitle = appSettings.getString("layerTitle") 
+      console.log("*** layerTitle ***")
+      if (typeof layerTitle !== 'undefined') {
+        console.log(layerTitle)        
+      } else {
+        console.log("indefinito")
+        this.onNavigationItemTap(Main)
+        return
+      }
+
       const source = appSettings.getString("sourceName") 
       const wDate = appSettings.getString("wDate") 
       const wd = wDate.replace(/-/g,"")
-      console.log(wd)
+      console.log("*** wd ***")
+      if (typeof wd !== 'undefined') {
+        console.log(wd)        
+      } else {
+        console.log("indefinito")
+        this.onNavigationItemTap(Main)
+        return
+      }
+
       this.linkTo = "https://estation.jrc.ec.europa.eu/eStation2/webservices?SERVICE=WMS&REQUEST=GetMap&width=736&height=814&FORMAT=image%2Fjpg&LAYERS=" + layer + "&DATE=" + wd
       console.log(this.linkTo)
       this.layer = layer
