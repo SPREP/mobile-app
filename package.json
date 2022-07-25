@@ -4,6 +4,8 @@
   "version": "1.0.0",
   "private": true,
   "dependencies": {
+    "@nativescript-community/ui-carto": "^1.8.14",
+    "@nativescript-community/ui-mapbox": "^6.2.15",
     "@nativescript/core": "~8.2.0",
     "@nativescript/theme": "~3.0.2",
     "nativescript-advanced-webview": "^7.0.1",

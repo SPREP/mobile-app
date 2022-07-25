@@ -28,6 +28,14 @@
                     <Label col="0" text.decode="&#xf013;" class="h3 nt-icon fas"/>
                     <Label col="1" text="Settings" class="h3 p-r-10"/>
                 </GridLayout>
+                <GridLayout columns="auto, *"
+                            :class="'nt-drawer__list-item' + (selectedPage === 'MapBox' ? ' -selected': '')"
+                            @tap="onNavigationItemTap(MapBox)">
+                    <Label col="0" text.decode="&#xf013;" class="h3 nt-icon fas"/>
+                    <Label col="1" text="Test mapbox" class="h3 p-r-10"/>
+                </GridLayout>
+
+
                 <StackLayout class="hr"/>
                 <GridLayout columns="auto, *"
                             :class="'nt-drawer__list-item' + (selectedPage === 'Home' ? ' -selected': '')"
@@ -35,16 +43,10 @@
                     <Label col="0" text.decode="&#xf129;" class="h3 nt-icon fas"/>
                     <Label col="1" text="About" class="h3 p-r-10"/>
                 </GridLayout>
-<!--
 
-                <GridLayout columns="auto, *"
-                            :class="'nt-drawer__list-item' + (selectedPage === 'Settings' ? ' -selected': '')"
-                            @tap="onNavigationItemTap(Settings)">
-                    <Label col="0" text.decode="&#xf013;" class="h3 nt-icon fas"/>
-                    <Label col="1" text="Settings" class="h3 p-r-10"/>
-                </GridLayout>
--->
-            </StackLayout>
+
+
+        </StackLayout>
         </ScrollView>
     </GridLayout>
 </template>
@@ -55,6 +57,7 @@
   import Main from "./Main";
   import Search from "./Search";
   import Settings from "./Settings";
+  import MapBox from "./MapBox";
   import * as utils from "~/shared/utils";
   import { SelectedPageService } from "~/shared/selected-page-service";
 
@@ -70,6 +73,7 @@
         Main: Main,
         Search: Search,
         Settings: Settings,
+        MapBox: MapBox,
         selectedPage: ""
       };
     },
@@ -78,6 +82,7 @@
       Calendar,
       Main,
       Search,
+      MapBox,
       Settings
     },
     methods: {

@@ -17,3 +17,5 @@ Vue.config.silent = !__DEV__
 new Vue({
   render: h => h(App)
 }).$start()
+
+Vue.registerElement("Mapbox", () => require("@nativescript-community/ui-mapbox").MapboxView)
