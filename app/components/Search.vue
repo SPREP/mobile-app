@@ -89,6 +89,8 @@
       }
 
       this.linkTo = "https://estation.jrc.ec.europa.eu/eStation2/webservices?SERVICE=WMS&REQUEST=GetMap&width=736&height=814&FORMAT=image%2Fjpg&LAYERS=" + layer + "&DATE=" + wd
+      // this.linkTo = "https://estation.jrc.ec.europa.eu/eStation2/webservices?SERVICE=WMS&REQUEST=GetMap&FORMAT=image%2Fsvg%2Bxml&LAYERS=" + layer + "&DATE=" + wd
+
       console.log(this.linkTo)
       this.layer = layer
       this.layerTitle = layerTitle
