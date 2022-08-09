@@ -87,26 +87,29 @@ import * as utils from "~/shared/utils";
                 // const linkTo = "https://estation.jrc.ec.europa.eu/eStation2/webservices?SERVICE=WMS&REQUEST=GetMap&SRS=EPSG:4326&BBOX=-173.537,35.8775,-11.9603,83.8009&width=736&height=814&FORMAT=image%2Fjpg&LAYERS=" + layer + "&DATE=" + wd
 
                 // questo è ok
-                // const linkTo = "https://estation.jrc.ec.europa.eu/eStation2/webservices?SERVICE=WMS&REQUEST=GetMap&width=736&height=814&FORMAT=image%2Fjpg&LAYERS=" + layer + "&DATE=" + wd
+                let linkTo = "https://estation.jrc.ec.europa.eu/eStation2/webservices?SERVICE=WMS&REQUEST=GetMap&width=736&height=814&FORMAT=image%2Fjpg&WIDTH=256&HEIGHT=256&bbox={bbox-epsg-3857}&CRS=EPSG:3857&LAYERS=" + layer + "&DATE=" + wd
 
-                const linkTo = 'https://ies-ows.jrc.ec.europa.eu/iforce/kwt/wms.py?service=WMS&request=GetMap&layers=Class20&styles=&format=image%2Fpng&transparent=true&version=1.1.1&width=256&height=256&srs=EPSG%3A3857&bbox=4070118.882129066,-78271.51696401955,4148390.3990930864,0'
+                // Link fornito da Dario Simonetti con la projection corretta
+                // const linkTo = 'https://ies-ows.jrc.ec.europa.eu/iforce/kwt/wms.py?service=WMS&request=GetMap&layers=Class20&styles=&format=image%2Fpng&transparent=true&version=1.1.1&width=256&height=256&srs=EPSG%3A3857&bbox=4070118.882129066,-78271.51696401955,4148390.3990930864,0'
 
-                // const linkTo = "https://estation.jrc.ec.europa.eu/eStation2/webservices?SERVICE=WMS&REQUEST=GetMap&FORMAT=image%2Fsvg%2Bxml&LAYERS=" + layer + "&DATE=" + wd
+                linkTo = 'https://estation.jrc.ec.europa.eu/eStation2/webservices?SERVICE=WMS&VERSION=1.3.0&REQUEST=GetMap&LAYERS=' + layer + '&FORMAT=image%2Fjpg&TRANSPARENT=false&date=' + wd + '&time_to_nocache=1622704629174&WIDTH=256&HEIGHT=256&bbox={bbox-epsg-3857}&CRS=EPSG:3857'
+
+                // linkTo = 'https://estation.jrc.ec.europa.eu/eStation2/webservices?SERVICE=WMS&VERSION=1.3.0&REQUEST=GetMap&LAYERS=layer_chirps-dekad_2.0_10d&FORMAT=image%2Fjpg&TRANSPARENT=false&date=20200921&time_to_nocache=1622704629174&WIDTH=256&HEIGHT=256&bbox={bbox-epsg-3857}&CRS=EPSG:3857'
 
                 console.log(linkTo)
-/*
+
                  args.map.setViewport(
                     {
                         bounds: {
-                        north: 52.4820,
-                        east: 5.1087,
-                        south: 52.2581,
-                        west: 4.6816
+                        north: 38.27,
+                        east: 57.60,
+                        south: -37.18,
+                        west: -20.62
                         },
                         animated: true // default true
                     }
                 )
-*/
+
 /*
                 args.map.addSource('wms-test-source', {
                     'type': 'raster',
@@ -127,9 +130,10 @@ import * as utils from "~/shared/utils";
                 args.map.addSource('wms-test-source', {
                     type: 'raster',
                     tiles : [
-                        'https://ies-ows.jrc.ec.europa.eu/iforce/kwt/wms.py?service=WMS&request=GetMap&layers=Sentinel2020&srs=EPSG:3857&styles=&format=image/png&transparent=true&version=1.1.1&width=256&height=256&bbox={bbox-epsg-3857}'],
-                    tileSize: 256    
-                })
+                        linkTo],
+//                        'https://ies-ows.jrc.ec.europa.eu/iforce/kwt/wms.py?service=WMS&request=GetMap&layers=Sentinel2020&srs=EPSG:3857&styles=&format=image/png&transparent=true&version=1.1.1&width=256&height=256&bbox={bbox-epsg-3857}'],
+                        tileSize: 512    
+                    })
 
                 args.map.addLayer(
                     {

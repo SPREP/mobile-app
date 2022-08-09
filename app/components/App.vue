@@ -11,7 +11,6 @@
 
 <script>
   import DrawerContent from './DrawerContent'
-  import Search from './Search'
   import MapBox from './MapBox'
   import { SlideInOnTopTransition } from 'nativescript-ui-sidedrawer';
 
@@ -24,7 +23,6 @@
 
     components: {
       DrawerContent,
-      Search,
       MapBox
     }
   }

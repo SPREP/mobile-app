@@ -38,7 +38,7 @@
   import * as utils from "~/shared/utils";
   import { SelectedPageService } from "../shared/selected-page-service";
   import capabilities from  "~/shared/capabilities.json";
-  import Search from "./Search";
+  import MapBox from "./MapBox";
 
   const appSettings = require("@nativescript/core/application-settings");
 
@@ -107,7 +107,7 @@
       },
       onButtonTap: function () {
         console.log('ok')
-        this.onNavigationItemTap(Search)
+        this.onNavigationItemTap(MapBox)
       },
       dateChanged: function (dc) {
         if (!this.beforeMount) {

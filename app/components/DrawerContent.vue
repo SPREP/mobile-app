@@ -17,9 +17,9 @@
                 </GridLayout>
 -->                
                 <GridLayout columns="auto, *"
-                            :class="'nt-drawer__list-item' + (selectedPage === 'Search' ? ' -selected': '')"
-                            @tap="onNavigationItemTap(Search)">
-                    <Label col="0" text.decode="&#xf279;" class="nt-icon fas"/>
+                            :class="'nt-drawer__list-item' + (selectedPage === 'MapBox' ? ' -selected': '')"
+                            @tap="onNavigationItemTap(MapBox)">
+                    <Label col="0" text.decode="&#xf013;" class="h3 nt-icon fas"/>
                     <Label col="1" text="Map" class="h3 p-r-10"/>
                 </GridLayout>
                 <GridLayout columns="auto, *"
@@ -28,18 +28,12 @@
                     <Label col="0" text.decode="&#xf013;" class="h3 nt-icon fas"/>
                     <Label col="1" text="Settings" class="h3 p-r-10"/>
                 </GridLayout>
-                <GridLayout columns="auto, *"
-                            :class="'nt-drawer__list-item' + (selectedPage === 'MapBox' ? ' -selected': '')"
-                            @tap="onNavigationItemTap(MapBox)">
-                    <Label col="0" text.decode="&#xf013;" class="h3 nt-icon fas"/>
-                    <Label col="1" text="Test mapbox" class="h3 p-r-10"/>
-                </GridLayout>
 
 
                 <StackLayout class="hr"/>
                 <GridLayout columns="auto, *"
                             :class="'nt-drawer__list-item' + (selectedPage === 'Home' ? ' -selected': '')"
-                            @tap="onNavigationItemTap(Home)">
+                            @tap="onNavigationItemTap(MapBox)">
                     <Label col="0" text.decode="&#xf129;" class="h3 nt-icon fas"/>
                     <Label col="1" text="About" class="h3 p-r-10"/>
                 </GridLayout>
@@ -52,7 +46,7 @@
 </template>
 
 <script>
-  import Home from "./Home";
+  // import Home from "./Home";
   import Calendar from "./Calendar";
   import Main from "./Main";
   import Search from "./Search";
@@ -68,7 +62,7 @@
     },
     data() {
       return {
-        Home: Home,
+        // Home: Home,
         Calendar: Calendar,
         Main: Main,
         Search: Search,
@@ -78,7 +72,7 @@
       };
     },
     components: {
-      Home,
+      // Home,
       Calendar,
       Main,
       Search,
