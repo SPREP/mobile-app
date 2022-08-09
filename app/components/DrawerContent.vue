@@ -19,12 +19,12 @@
                 <GridLayout columns="auto, *"
                             :class="'nt-drawer__list-item' + (selectedPage === 'MapBox' ? ' -selected': '')"
                             @tap="onNavigationItemTap(MapBox)">
-                    <Label col="0" text.decode="&#xf013;" class="h3 nt-icon fas"/>
+                    <Label col="0" text.decode="&#xf279;" class="h3 nt-icon fas"/>
                     <Label col="1" text="Map" class="h3 p-r-10"/>
                 </GridLayout>
                 <GridLayout columns="auto, *"
-                            :class="'nt-drawer__list-item' + (selectedPage === 'Main' ? ' -selected': '')"
-                            @tap="onNavigationItemTap(Main)">
+                            :class="'nt-drawer__list-item' + (selectedPage === 'Settings' ? ' -selected': '')"
+                            @tap="onNavigationItemTap(Settings)">
                     <Label col="0" text.decode="&#xf013;" class="h3 nt-icon fas"/>
                     <Label col="1" text="Settings" class="h3 p-r-10"/>
                 </GridLayout>
@@ -32,8 +32,8 @@
 
                 <StackLayout class="hr"/>
                 <GridLayout columns="auto, *"
-                            :class="'nt-drawer__list-item' + (selectedPage === 'Home' ? ' -selected': '')"
-                            @tap="onNavigationItemTap(MapBox)">
+                            :class="'nt-drawer__list-item' + (selectedPage === 'About' ? ' -selected': '')"
+                            @tap="onNavigationItemTap(About)">
                     <Label col="0" text.decode="&#xf129;" class="h3 nt-icon fas"/>
                     <Label col="1" text="About" class="h3 p-r-10"/>
                 </GridLayout>
@@ -46,10 +46,8 @@
 </template>
 
 <script>
-  // import Home from "./Home";
+  import About from "./About";
   import Calendar from "./Calendar";
-  import Main from "./Main";
-  import Search from "./Search";
   import Settings from "./Settings";
   import MapBox from "./MapBox";
   import * as utils from "~/shared/utils";
@@ -62,10 +60,8 @@
     },
     data() {
       return {
-        // Home: Home,
+        About: About,
         Calendar: Calendar,
-        Main: Main,
-        Search: Search,
         Settings: Settings,
         MapBox: MapBox,
         selectedPage: ""
@@ -74,10 +70,8 @@
     components: {
       // Home,
       Calendar,
-      Main,
-      Search,
+      Settings,
       MapBox,
-      Settings
     },
     methods: {
       onNavigationItemTap(component) {

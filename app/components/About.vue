@@ -31,7 +31,7 @@
 
   export default {
     mounted() {
-      SelectedPageService.getInstance().updateSelectedPage("MapBox");
+      // SelectedPageService.getInstance().updateSelectedPage("About");
     },
     computed: {
       message() {
