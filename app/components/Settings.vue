@@ -50,7 +50,8 @@
       let arr = capabilities.WMT_MS_Capabilities.Capability.Layer.Layer
       arr.sort((a, b) => (a.Title > b.Title ? 1 : b.Title > a.Title ? -1 : 0));
       for (let l of arr) {
-        console.log(l.Title)
+        // console.log(l)
+        // console.log(l.Title)
         this.listOfItemsLayer.push(l.Name)
         this.listOfItemsLayerTitle.push(l.Title) 
         this.listOfItemsLayerExtent.push(l.Extent) 

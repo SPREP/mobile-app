@@ -4,10 +4,36 @@
         <NavigationButton visibility="hidden"/>
         <GridLayout columns="50, *">
           <Label class="action-bar-title h2" text="Map" colSpan="2"/>
-
           <Label class="fas" text.decode="&#xf0c9;" @tap="onDrawerButtonTap"/>
         </GridLayout>
       </ActionBar>
+
+
+<StackLayout>
+    <ContentView height="90%" width="100%">
+                <Mapbox
+                    accessToken="pk.eyJ1IjoiYnVjY2kiLCJhIjoiY2w2MHNpZGIxMDJsMDNqbnV0cDV2MDJ6cSJ9.hBDYjKhQ_7BzhSTempdKbg"
+                    mapStyle="naturalEarth"                    
+                    latitude="2.3681990625302096"
+                    longitude="18.20708537210865"
+                    hideCompass="true"
+                    zoomLevel="1.8"
+                    showUserLocation="false"
+                    disableZoom="false"
+                    disableRotation="false"
+                    disableScroll="false"
+                    disableTilt="false"
+                    @mapReady="onMapReady($event)">
+                </Mapbox>
+    </ContentView>
+    <FlexboxLayout height="50" backgroundColor="#3c495e">
+        <Label width="80%" :text="layerName" class="nomeLayer" @tap="onTap"/>
+        <Image :src="srcLegend"  background="white" width="20%" @tap="onLegendTap" stretch="fill" />
+    </FlexboxLayout>
+<!--    <Image src="https://art.nativescript-vue.org/NativeScript-Vue-White-Green.png" stretch="none" /> -->
+  </StackLayout>
+
+<!--
         <GridLayout>
                 <Mapbox
                     accessToken="pk.eyJ1IjoiYnVjY2kiLCJhIjoiY2w2MHNpZGIxMDJsMDNqbnV0cDV2MDJ6cSJ9.hBDYjKhQ_7BzhSTempdKbg"
@@ -24,19 +50,30 @@
                     @mapReady="onMapReady($event)">
                 </Mapbox>
         </GridLayout>
+-->
+
+
     </Page>
 </template>
-<
+
+
+
+
+
+
 <script>
   import { convertHSLToRGBColor } from "@nativescript/core/css/parser";
 import * as utils from "~/shared/utils";
   import { SelectedPageService } from "../shared/selected-page-service";
+  import Settings from "./Settings";
+  import Legend from "./Legend";
 
   const appSettings = require("@nativescript/core/application-settings");
 
      export default {
         data () {
-            return { };
+            return { layerName:null,
+            srcLegend: null};
         },
         mounted() {
             console.log('** MAPBOX MOUNTED ***')
@@ -48,6 +85,16 @@ import * as utils from "~/shared/utils";
             onDrawerButtonTap() {
                 utils.showDrawer();
             },
+            onTap() {
+                this.$navigateTo(Settings, {
+                clearHistory: true
+                });
+            },
+            onLegendTap() {
+                this.$navigateTo(Legend, {
+                clearHistory: true
+                });
+            },
             onMapReady(args) {
                 console.log('*** ADD LAYER ***')
                 
@@ -57,7 +104,7 @@ import * as utils from "~/shared/utils";
                     console.log(layer)        
                 } else {
                     console.log("indefinito")
-                    this.onNavigationItemTap(Main)
+                    this.onNavigationItemTap(Settings)
                     return
                 }
 
@@ -67,9 +114,10 @@ import * as utils from "~/shared/utils";
                     console.log(layerTitle)        
                 } else {
                     console.log("indefinito")
-                    this.onNavigationItemTap(Main)
+                    this.onNavigationItemTap(Settings)
                     return
                 }
+                this.layerName = layerTitle
 
                 const source = appSettings.getString("sourceName") 
                 const wDate = appSettings.getString("wDate") 
@@ -79,7 +127,7 @@ import * as utils from "~/shared/utils";
                     console.log(wd)        
                 } else {
                     console.log("indefinito")
-                    this.onNavigationItemTap(Main)
+                    this.onNavigationItemTap(Settings)
                     return
                 }
 
@@ -97,6 +145,8 @@ import * as utils from "~/shared/utils";
                 // linkTo = 'https://estation.jrc.ec.europa.eu/eStation2/webservices?SERVICE=WMS&VERSION=1.3.0&REQUEST=GetMap&LAYERS=layer_chirps-dekad_2.0_10d&FORMAT=image%2Fjpg&TRANSPARENT=false&date=20200921&time_to_nocache=1622704629174&WIDTH=256&HEIGHT=256&bbox={bbox-epsg-3857}&CRS=EPSG:3857'
 
                 console.log(linkTo)
+
+                this.srcLegend = 'https://estation.jrc.ec.europa.eu/eStation2/webservices?SERVICE=WMS&REQUEST=GetLegendGraphic&LAYERS=' + layer
 
                  args.map.setViewport(
                     {

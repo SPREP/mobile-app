@@ -39,7 +39,6 @@
                 </GridLayout>
 
 
-
         </StackLayout>
         </ScrollView>
     </GridLayout>
@@ -57,6 +56,11 @@
     mounted() {
       SelectedPageService.getInstance().selectedPage$
         .subscribe((selectedPage) => this.selectedPage = selectedPage);
+    },
+    watch: {
+      selectedPage(s) {
+        console.log(s)
+      }
     },
     data() {
       return {
