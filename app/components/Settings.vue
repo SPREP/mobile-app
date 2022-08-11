@@ -90,6 +90,7 @@
         layerName: '',
         minDate: '',
         maxDate: '',
+        dateValueChanged: false,
         listOfItemsLayerTitle: [],
         listOfItemsLayer: [],
         listOfItemsLayerExtent: [],
@@ -111,6 +112,24 @@
         this.onNavigationItemTap(MapBox)
       },
       dateChanged: function (dc) {
+        if (this.dateValueChanged) {
+          this.dateValueChanged = false
+          return
+        }
+        console.log("*** dateChanged ***")
+        console.log(this.selectedDate)        
+        const wDate = appSettings.getString("wDate") 
+        console.log("*** wDate ***")
+        console.log(wDate)        
+
+        if (this.layerChanged) {
+          this.dateValueChanged = true
+          this.layerChanged = false
+          this.selectedDate = wDate
+          return
+        }
+
+
         if (!this.beforeMount) {
           // console.log(this.selectedDate)
           const birthday = new Date(this.selectedDate);
@@ -133,21 +152,52 @@
       },
 
       selectedIndexLayerChanged: function (e) {
+
+        console.log('*** valori letti da preferenze ***')
+        const layer = appSettings.getString("layerName") 
+        console.log("*** layer ***")
+        console.log(layer)        
+        
+        const layerTitle = appSettings.getString("layerTitle") 
+        console.log("*** layerTitle ***")
+        console.log(layerTitle)        
+
+        const wDate = appSettings.getString("wDate") 
+        console.log("*** wDate ***")
+        console.log(wDate)        
+
+
+
         if (!this.beforeMount) {
           console.log("set appSettings layer")
           console.log(e.value)
-          appSettings.setNumber("layerIndex", e.value);
-          appSettings.setString("layerName", this.listOfItemsLayer[e.value]);
-          appSettings.setString("layerTitle", this.listOfItemsLayerTitle[e.value]);
-          // appSettings.setString("layerMinDate", this.listOfItemsLayerTitle[e.value]);
-          console.log(this.listOfItemsLayerExtent[e.value])
-          this.layerTitle = this.listOfItemsLayerTitle[e.value]
-          this.layerName = this.listOfItemsLayer[e.value]
+          console.log(this.listOfItemsLayer[e.value])
+          console.log(this.listOfItemsLayerTitle[e.value])
+
           let d = this.listOfItemsLayerExtent[e.value].split('/')
           this.minDate = d[0].substring(0,4) + '-' + d[0].substring(4,6) + '-' + d[0].substring(6,8)
           this.maxDate = d[1].substring(0,4) + '-' + d[1].substring(4,6) + '-' + d[1].substring(6,8)
           appSettings.setString("wDate", this.minDate);
-          this.selectedDate = this.minDate
+
+          this.layerChanged = true
+          if (layer !== this.listOfItemsLayer[e.value]) {
+            appSettings.setNumber("layerIndex", e.value);
+            appSettings.setString("layerName", this.listOfItemsLayer[e.value]);
+            appSettings.setString("layerTitle", this.listOfItemsLayerTitle[e.value]);
+
+            // appSettings.setString("layerMinDate", this.listOfItemsLayerTitle[e.value]);
+            console.log(this.listOfItemsLayerExtent[e.value])
+            this.layerTitle = this.listOfItemsLayerTitle[e.value]
+            this.layerName = this.listOfItemsLayer[e.value]
+            appSettings.setString("wDate", this.minDate);
+            this.selectedDate = this.minDate
+          } else {
+            console.log('*** Stesso layer ***')
+            console.log('*** Imposto data  ***')
+            console.log(wDate)
+            appSettings.setString("wDate", wDate);
+            this.selectedDate = wDate
+          }
         }
       },
       onDrawerButtonTap() {

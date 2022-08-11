@@ -26,11 +26,14 @@
                     @mapReady="onMapReady($event)">
                 </Mapbox>
     </ContentView>
-    <FlexboxLayout height="50" backgroundColor="#3c495e">
-        <Label width="80%" :text="layerName" class="nomeLayer" @tap="onTap"/>
-        <Image :src="srcLegend"  background="white" width="20%" @tap="onLegendTap" stretch="fill" />
-    </FlexboxLayout>
-<!--    <Image src="https://art.nativescript-vue.org/NativeScript-Vue-White-Green.png" stretch="none" /> -->
+<WrapLayout backgroundColor="#fcfcfc">
+    <StackLayout height="50" width="80%" backgroundColor="#fcfcfc">
+        <Label width="100%" :text="layerName" class="nomeLayer" @tap="onTap"/>
+        <Label width="100%" :text="wdate" class="nomeLayer" @tap="onTap"/>
+    </StackLayout>
+    <Image :src="srcLegend"  background="white" width="20%" @tap="onLegendTap" stretch="fill" />
+</WrapLayout>
+
   </StackLayout>
 
 <!--
@@ -72,8 +75,7 @@ import * as utils from "~/shared/utils";
 
      export default {
         data () {
-            return { layerName:null,
-            srcLegend: null};
+            return { layerName:null, wdate:null, srcLegend: null};
         },
         mounted() {
             console.log('** MAPBOX MOUNTED ***')
@@ -130,7 +132,7 @@ import * as utils from "~/shared/utils";
                     this.onNavigationItemTap(Settings)
                     return
                 }
-
+                this.wdate = wDate
                 // const linkTo = "https://estation.jrc.ec.europa.eu/eStation2/webservices?SERVICE=WMS&REQUEST=GetMap&FORMAT=image%2Fjpg&LAYERS=" + layer + "&DATE=" + wd
                 // const linkTo = "https://estation.jrc.ec.europa.eu/eStation2/webservices?SERVICE=WMS&REQUEST=GetMap&SRS=EPSG:4326&BBOX=-173.537,35.8775,-11.9603,83.8009&width=736&height=814&FORMAT=image%2Fjpg&LAYERS=" + layer + "&DATE=" + wd
 

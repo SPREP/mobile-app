@@ -12,14 +12,12 @@
       </ActionBar>
 
 <StackLayout>
-    <ContentView height="90%" width="50%">
-
+    <ContentView height="80%" width="100%">
         <Image :src="srcLegend"  background="white" width="100%" @tap="onLegendTap" stretch="fill" />
-
    </ContentView>
-    <FlexboxLayout height="50" >
-      <Button marginTop="0" height="50" width="100%" class="h3 text-center" backgroundColor="blue" color="white" text="Close" @tap="onButtonTap" />
-    </FlexboxLayout>
+      <Label height="30" width="100%" :text="layerName" class="nomeLayer" @tap="onTap"/>
+      <Label height="30" width="100%" :text="wdate" class="nomeLayer" @tap="onTap"/>
+      <Button marginTop="0" height="60" width="100%" class="h2 text-center pt-5" backgroundColor="blue" color="white" text="Close" @tap="onButtonTap" />
 <!--    <Image src="https://art.nativescript-vue.org/NativeScript-Vue-White-Green.png" stretch="none" /> -->
   </StackLayout>
 
@@ -75,6 +73,7 @@
                     this.onNavigationItemTap(Settings)
                     return
                 }
+                this.wdate = wDate
                 this.srcLegend = 'https://estation.jrc.ec.europa.eu/eStation2/webservices?SERVICE=WMS&REQUEST=GetLegendGraphic&LAYERS=' + layer
 
     },
