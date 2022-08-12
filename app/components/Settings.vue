@@ -177,7 +177,7 @@
           let d = this.listOfItemsLayerExtent[e.value].split('/')
           this.minDate = d[0].substring(0,4) + '-' + d[0].substring(4,6) + '-' + d[0].substring(6,8)
           this.maxDate = d[1].substring(0,4) + '-' + d[1].substring(4,6) + '-' + d[1].substring(6,8)
-          appSettings.setString("wDate", this.minDate);
+          appSettings.setString("wDate", this.maxDate);
 
           this.layerChanged = true
           if (layer !== this.listOfItemsLayer[e.value]) {
@@ -189,8 +189,8 @@
             console.log(this.listOfItemsLayerExtent[e.value])
             this.layerTitle = this.listOfItemsLayerTitle[e.value]
             this.layerName = this.listOfItemsLayer[e.value]
-            appSettings.setString("wDate", this.minDate);
-            this.selectedDate = this.minDate
+            appSettings.setString("wDate", this.maxDate);
+            this.selectedDate = this.maxDate
           } else {
             console.log('*** Stesso layer ***')
             console.log('*** Imposto data  ***')
