@@ -9,8 +9,9 @@
         </GridLayout>
       </ActionBar>
 
-<StackLayout>
-    <ContentView height="80%" width="100%">
+
+<AbsoluteLayout backgroundColor="#3c495e">
+    <ContentView height="100%" width="100%" left="0" top="0">
                 <Mapbox
                     accessToken="pk.eyJ1IjoiYnVjY2kiLCJhIjoiY2w2MHNpZGIxMDJsMDNqbnV0cDV2MDJ6cSJ9.hBDYjKhQ_7BzhSTempdKbg"
                     mapStyle="naturalEarth"                    
@@ -26,29 +27,38 @@
                     @mapReady="onMapReady($event)">
                 </Mapbox>
     </ContentView>
-    <ContentView height="15%" width="100%">
-        <WrapLayout backgroundColor="#fcfcfc">
-            <StackLayout height="50" width="80%" backgroundColor="#fcfcfc">
-                <Label width="100%" :text="layerName" class="nomeLayer" @tap="onTap"/>
-                <Label width="100%" :text="wdate" class="nomeLayer" @tap="onTap"/>
+
+    <Label width="100%" :text="layerName" left="0" top="600"   class="nomeLayer" @tap="onTap"/>
+    <Label width="100%" :text="wdate" left="0" top="620"  class="nomeLayer" @tap="onTap"/>
+
+    <ListPicker left="0" top="500" width="100%" :items="listOfItemsLayerTitle" :selectedIndex="selectedIndexLayer"
+        @selectedIndexChange="selectedIndexLayerChanged"   />
+
+    <!--
+    <ContentView height="15%" width="100%" left="0" top="600" backgroundColor="rgba(255, 165, 0, 0.1)">
+    <WrapLayout backgroundColor="rgba(255, 165, 0, 0.1)">
+            <StackLayout height="50" width="100%" backgroundColor="rgba(255, 165, 0, 0.1)">
             </StackLayout>
-            <Image :src="srcLegend"  background="white" width="20%" @tap="onLegendTap" stretch="fill" />
     </WrapLayout>
     </ContentView>
-    <ContentView height="5%" width="100%">
-      <WrapLayout backgroundColor="#000000">
+    -->
+    <ContentView height="5%" width="100%" left="0" top="650">
+      <WrapLayout backgroundColor="#000000"  >
         <Label text="Change Layer/Date" class="h3 text-center" width="50%" height="100%" backgroundColor="red" color="white"  @tap="onTap"/>
-
-<Label text="Info" class="h3 text-center" width="50%" height="100%" backgroundColor="green" color="white"  @tap="goInfo"/>
+        <Label text="Info" class="h3 text-center" width="50%" height="100%" backgroundColor="green" color="white"  @tap="goInfo"/>
 <!---
         <Button  width="45%" class="h3 text-center" backgroundColor="blue" color="white" text="Show Map" @tap="onButtonTap" />
         <Button  width="40%" class="h3 text-center" backgroundColor="green" color="white" text="Info" @tap="goInfo" />
 -->
       </WrapLayout>
     </ContentView>
+  <Image :src="srcLegend"  left="0" top="0" width="20%" @tap="onLegendTap" stretch="fill" />
+  <!--
+  <Label text="10,10" left="10" top="10" width="100" height="100" backgroundColor="rgba(255, 165, 0, 0.1)"/>
+  <Label text="30,40" left="30" top="40" width="100" height="100" backgroundColor="#43b883"/>
+  -->
+</AbsoluteLayout>
 
-
-  </StackLayout>
 
 <!--
         <GridLayout>
@@ -85,20 +95,123 @@ import * as utils from "~/shared/utils";
   import Settings from "./Settings";
   import Legend from "./Legend";
   import About from "./About";
+  // const platform = require("platform")
+  import capabilities from  "~/shared/capabilities.json";
+
+  import { screen } from '@nativescript/core/platform'
 
   const appSettings = require("@nativescript/core/application-settings");
 
      export default {
         data () {
-            return { layerName:null, wdate:null, srcLegend: null};
+            let layer = null;
+            try {
+                layer = appSettings.getNumber("layerIndex");
+            } catch (error) {
+                console.log(error)
+            }
+            console.log('*** DATA ***')
+            console.log(layer)
+
+            return {
+                layerTitle: '',
+                layerName: '',
+                minDate: '',
+                maxDate: '',
+                layer: null,
+                dateValueChanged: false,
+                listOfItemsLayerTitle: [],
+                listOfItemsLayer: [],
+                listOfItemsLayerExtent: [],
+                selectedIndexLayer: layer,
+                selectedDate:'2000-01-01',
+                beforeMount: true,
+                wdate:null, srcLegend: null};
         },
         mounted() {
             console.log('** MAPBOX MOUNTED ***')
+
+            console.log(screen.mainScreen.widthDIPs)
+            console.log(screen.mainScreen.widthPixels)
+            console.log(screen.mainScreen.heightDIPs)
+            console.log(screen.mainScreen.heightPixels)
+            let arr = capabilities.WMT_MS_Capabilities.Capability.Layer.Layer
+            arr.sort((a, b) => (a.Title > b.Title ? 1 : b.Title > a.Title ? -1 : 0));
+            for (let l of arr) {
+                // console.log(l)
+                // console.log(l.Title)
+                this.listOfItemsLayer.push(l.Name)
+                this.listOfItemsLayerTitle.push(l.Title) 
+                this.listOfItemsLayerExtent.push(l.Extent) 
+            }
+            const layer = appSettings.getNumber("layerIndex");
+            console.log(layer)
+            console.log(appSettings.getString("layer2"))
+            console.log("================")
+            this.selectedIndex = layer
+
+            const setData = appSettings.getString("wDate");
+            console.log(setData)
+            console.log("================")
+            this.selectedDate = setData
+
+            this.beforeMount = false
+
         },
         unmounted() {
             console.log('** MAPBOX UN-MOUNTED ***')
         },
         methods: {
+      selectedIndexLayerChanged: function (e) {
+
+        console.log('*** valori letti da preferenze ***')
+        const layer = appSettings.getString("layerName") 
+        console.log("*** layer ***")
+        console.log(layer)        
+        
+        const layerTitle = appSettings.getString("layerTitle") 
+        console.log("*** layerTitle ***")
+        console.log(layerTitle)        
+
+        const wDate = appSettings.getString("wDate") 
+        console.log("*** wDate ***")
+        console.log(wDate)        
+
+
+
+        if (!this.beforeMount) {
+          console.log("set appSettings layer")
+          console.log(e.value)
+          console.log(this.listOfItemsLayer[e.value])
+          console.log(this.listOfItemsLayerTitle[e.value])
+
+          let d = this.listOfItemsLayerExtent[e.value].split('/')
+          this.minDate = d[0].substring(0,4) + '-' + d[0].substring(4,6) + '-' + d[0].substring(6,8)
+          this.maxDate = d[1].substring(0,4) + '-' + d[1].substring(4,6) + '-' + d[1].substring(6,8)
+          appSettings.setString("wDate", this.maxDate);
+
+          this.layerChanged = true
+          if (layer !== this.listOfItemsLayer[e.value]) {
+            appSettings.setNumber("layerIndex", e.value);
+            appSettings.setString("layerName", this.listOfItemsLayer[e.value]);
+            appSettings.setString("layerTitle", this.listOfItemsLayerTitle[e.value]);
+
+            // appSettings.setString("layerMinDate", this.listOfItemsLayerTitle[e.value]);
+            console.log(this.listOfItemsLayerExtent[e.value])
+            this.layerTitle = this.listOfItemsLayerTitle[e.value]
+            this.layerName = this.listOfItemsLayer[e.value]
+            appSettings.setString("wDate", this.maxDate);
+            this.selectedDate = this.maxDate
+          } else {
+            console.log('*** Stesso layer ***')
+            console.log('*** Imposto data  ***')
+            console.log(wDate)
+            appSettings.setString("wDate", wDate);
+            this.selectedDate = wDate
+          }
+        }
+      },
+
             onDrawerButtonTap() {
                 utils.showDrawer();
             },
