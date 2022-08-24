@@ -12,12 +12,21 @@
       </ActionBar>
 
 <StackLayout>
-    <ContentView height="80%" width="100%">
+    <ContentView height="85%" width="100%">
         <Image :src="srcLegend"  background="white" width="100%" @tap="onLegendTap" stretch="fill" />
    </ContentView>
-      <Label height="30" width="100%" :text="layerName" class="nomeLayer" @tap="onTap"/>
-      <Label height="30" width="100%" :text="wdate" class="nomeLayer" @tap="onTap"/>
+    <ContentView height="10%" width="100%">
+        <WrapLayout >
+          <Label width="100%" :text="layerName" class="nomeLayer" @tap="onTap"/>
+          <Label width="100%" :text="wdate" class="nomeLayer" @tap="onTap"/>
+        </WrapLayout>
+    </ContentView>
+    <ContentView height="5%" width="100%">
+      <Label text="Close" class="h3 text-center" width="100%" height="100%" backgroundColor="blue" color="white"  @tap="onButtonTap"/>
+      <!--
       <Button marginTop="0" height="60" width="100%" class="h2 text-center pt-5" backgroundColor="blue" color="white" text="Close" @tap="onButtonTap" />
+      -->
+    </ContentView>
 <!--    <Image src="https://art.nativescript-vue.org/NativeScript-Vue-White-Green.png" stretch="none" /> -->
   </StackLayout>
 
@@ -102,6 +111,9 @@
     // Start custom common variables
     @import '@nativescript/theme/scss/variables/blue';
     // End custom common variables
+    .action-bar {
+      height: 0px;
+    }
 
     // Custom styles
 </style>

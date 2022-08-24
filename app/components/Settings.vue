@@ -3,34 +3,43 @@
       <ActionBar class="action-bar">
         <NavigationButton visibility="hidden"/>
         <GridLayout columns="50, *">
-          <Label class="action-bar-title h2" text="Settings" colSpan="2"/>
+          <Label class="action-bar-title h2" text="Climate Station - Settings" colSpan="2"/>
 
-          <Label class="fas" text.decode="&#xf0c9;" @tap="onDrawerButtonTap"/>
+          <!--<Label class="fas" text.decode="&#xf0c9;" @tap="onDrawerButtonTap"/> -->
         </GridLayout>
       </ActionBar>
-
-    <ScrollView marginTop="-100">
-        <StackLayout orientation="vertical" top="10" width="300" height="520"
-            backgroundColor="#fcfcfc">
-            <!--
-            <Label text="Choose source" class="h3 text-center" width="300" height="40"  paddingTop="5" marginTop="1"
-                backgroundColor="yellow" />
-            -->
-            <Label text="Choose layer" class="h3 text-center"  width="300" height="40"  paddingTop="5" marginTop="0"
-                backgroundColor="orange" />
-            <ListPicker height="120"  :items="listOfItemsLayerTitle" :selectedIndex="selectedIndexLayer"
+<StackLayout>
+    <ContentView height="45%" width="100%" backgroundColor="#c7f9cc">
+        <StackLayout>
+          <Label text="Choose layer" class="h2 text-center"   paddingTop="5" marginTop="50"
+                backgroundColor="#c7f9cc" />
+          <ListPicker height="120"  :items="listOfItemsLayerTitle" :selectedIndex="selectedIndexLayer"
               @selectedIndexChange="selectedIndexLayerChanged"   />
               <Label class="h4 text-center" :text="layerName"/>
-              <!--
-              <Label class="h4" :text="maxDate"/>
-              -->
-              <Label text="Select date" class="h3 text-center"  width="300" height="40"  paddingTop="5" marginTop="30"
-                backgroundColor="orange" />
+      </StackLayout>
+    </ContentView>
+    <ContentView height="50%" width="100%" backgroundColor="#ffd670">
+        <StackLayout>
+              <Label text="Select date" class="h2 text-center"   paddingTop="5" marginTop="30"
+                backgroundColor="#ffd670" />
               <DatePicker v-model="selectedDate" @dateChange="dateChanged" :minDate="minDate" :maxDate="maxDate"/>
+      </StackLayout>
+    </ContentView>
+    <ContentView height="5%" width="100%">
+      <WrapLayout backgroundColor="#000000">
+        <Label text="Show Map" class="h3 text-center" width="50%" height="100%" color="white" backgroundColor="blue" @tap="onButtonTap"/>
+        <Label text="Info" class="h3 text-center" width="50%" height="100%" color="white"  backgroundColor="green" @tap="goInfo"/>
+<!--
+        <Button  width="45%" class="h3 text-center" backgroundColor="blue" color="white" text="Show Map" @tap="onButtonTap" />
+        <Button  width="40%" class="h3 text-center" backgroundColor="green" color="white" text="Info" @tap="goInfo" />
+-->
+      </WrapLayout>
+      </ContentView>
 
-            <Button marginTop="0" height="50" class="h3 text-center" backgroundColor="blue" color="white" text="Show Map" @tap="onButtonTap" />
-        </StackLayout>
-    </ScrollView>
+</StackLayout>
+
+
+
     </Page>
 </template>
 
@@ -39,6 +48,7 @@
   import { SelectedPageService } from "../shared/selected-page-service";
   import capabilities from  "~/shared/capabilities.json";
   import MapBox from "./MapBox";
+  import About from "./About";
 
   const appSettings = require("@nativescript/core/application-settings");
 
@@ -108,8 +118,10 @@
         utils.closeDrawer();
       },
       onButtonTap: function () {
-        console.log('ok')
         this.onNavigationItemTap(MapBox)
+      },
+      goInfo: function () {
+        this.onNavigationItemTap(About)
       },
       dateChanged: function (dc) {
         if (this.dateValueChanged) {
@@ -213,4 +225,8 @@
     // End custom common variables
 
     // Custom styles
+    .action-bar {
+      height: 0px;
+    }
+
 </style>
