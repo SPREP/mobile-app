@@ -153,18 +153,12 @@ import * as utils from "~/shared/utils";
                     return
                 }
                 this.wdate = wDate
-                // const linkTo = "https://estation.jrc.ec.europa.eu/eStation2/webservices?SERVICE=WMS&REQUEST=GetMap&FORMAT=image%2Fjpg&LAYERS=" + layer + "&DATE=" + wd
-                // const linkTo = "https://estation.jrc.ec.europa.eu/eStation2/webservices?SERVICE=WMS&REQUEST=GetMap&SRS=EPSG:4326&BBOX=-173.537,35.8775,-11.9603,83.8009&width=736&height=814&FORMAT=image%2Fjpg&LAYERS=" + layer + "&DATE=" + wd
-
                 // questo è ok
                 let linkTo = "https://estation.jrc.ec.europa.eu/eStation2/webservices?SERVICE=WMS&REQUEST=GetMap&width=736&height=814&FORMAT=image%2Fjpg&WIDTH=256&HEIGHT=256&bbox={bbox-epsg-3857}&CRS=EPSG:3857&LAYERS=" + layer + "&DATE=" + wd
-
                 // Link fornito da Dario Simonetti con la projection corretta
                 // const linkTo = 'https://ies-ows.jrc.ec.europa.eu/iforce/kwt/wms.py?service=WMS&request=GetMap&layers=Class20&styles=&format=image%2Fpng&transparent=true&version=1.1.1&width=256&height=256&srs=EPSG%3A3857&bbox=4070118.882129066,-78271.51696401955,4148390.3990930864,0'
+                linkTo = 'https://estation.jrc.ec.europa.eu/eStation2/webservices?SERVICE=WMS&VERSION=1.3.0&REQUEST=GetMap&LAYERS=' + layer + '&FORMAT=image%2Fjpg&TRANSPARENT=false&date=' + wd + '&time_to_nocache=1622704629174&WIDTH=256&HEIGHT=256&bbox={bbox-epsg-3857}&CRS=EPSG:3857'
 
-                linkTo = 'https://estation.jrc.ec.europa.eu/eStation2/webservices?SERVICE=WMS&VERSION=1.3.0&REQUEST=GetMap&LAYERS=' + layer + '&FORMAT=image%2Fjpg&TRANSPARENT=true&date=' + wd + '&time_to_nocache=1622704629174&WIDTH=256&HEIGHT=256&bbox={bbox-epsg-3857}&CRS=EPSG:3857'
-
-                // linkTo = 'https://estation.jrc.ec.europa.eu/eStation2/webservices?SERVICE=WMS&VERSION=1.3.0&REQUEST=GetMap&LAYERS=layer_chirps-dekad_2.0_10d&FORMAT=image%2Fjpg&TRANSPARENT=false&date=20200921&time_to_nocache=1622704629174&WIDTH=256&HEIGHT=256&bbox={bbox-epsg-3857}&CRS=EPSG:3857'
 
                 console.log(linkTo)
 
@@ -175,44 +169,32 @@ import * as utils from "~/shared/utils";
                         bounds: {
                         north: 38.27,
                         east: 57.60,
-                        south: -37.18,
+                        south: -24.18,
                         west: -20.62
                         },
                         animated: true // default true
                     }
                 )
 
-/*
-                args.map.addSource('wms-test-source', {
-                    'type': 'raster',
-                    // 'url': linkTo,
-                     // use the tiles option to specify a WMS tile source URL
-                    // https://docs.mapbox.com/mapbox-gl-js/style-spec/sources/
-                    'tiles': [
-                    // linkTo,
-                    'https://ies-ows.jrc.ec.europa.eu/iforce/kwt/wms.py?service=WMS&request=GetMap&layers=Sentinel2020&srs=EPSG:3857&styles=&format=image/png&transparent=true&version=1.1.1&width=256&height=256&bbox=3991847.3651650455,-78271.51696401955,4070118.882129066,0'
-                    // 'https://www.gebco.net/data_and_products/gebco_web_services/web_map_service/mapserv?request=getmap&service=wms&BBOX=-90,-180,90,360&crs=EPSG:3875&format=image/jpeg&layers=gebco_latest&width=1200&height=600&version=1.3.0'
-                    // PERFETTO! 'https://img.nj.gov/imagerywms/Natural2015?bbox={bbox-epsg-3857}&format=image/png&service=WMS&version=1.1.1&request=GetMap&srs=EPSG:3857&transparent=true&width=256&height=256&layers=Natural2015'
-                    ],
-                    // bounds: [-90,-40.051129,90,40.051129],
-                    'tileSize': 256
-                });
-*/
 
                 args.map.addSource('wms-test-source', {
                     type: 'raster',
                     tiles : [
                         linkTo],
-//                        'https://ies-ows.jrc.ec.europa.eu/iforce/kwt/wms.py?service=WMS&request=GetMap&layers=Sentinel2020&srs=EPSG:3857&styles=&format=image/png&transparent=true&version=1.1.1&width=256&height=256&bbox={bbox-epsg-3857}'],
                         tileSize: 512    
                     })
+
+// See here for pain raster specification
+// https://docs.mapbox.com/mapbox-gl-js/style-spec/layers/#raster
 
                 args.map.addLayer(
                     {
                     id: 'wms-test-layer',
                     type: 'raster',
                     source: 'wms-test-source',
-                    paint: {},
+                    paint: {'line-color': '#ff0000',
+                        'raster-opacity': .4,
+                        },
                     },
                     'aeroway-line'
                 );
