@@ -57,7 +57,7 @@
     <ListPicker v-if="showLayers && !showInfo" left="0" backgroundColor="rgba(0, 0, 255, .6)" color="white" :top="topListPicker"  width="100%" :items="listOfItemsLayerTitle" :selectedIndex="selectedIndexLayer"
         @selectedIndexChange="selectedIndexLayerChanged"   />
 
-    <DatePicker v-if="showPickDate && !showInfo"  left="0" backgroundColor="rgba(255, 255, 255, .9)" color="white" :top="30"  width="100%"  v-model="selectedDate" @dateChange="dateChanged" :minDate="minDate" :maxDate="maxDate"/>
+    <DatePicker v-if="showPickDate && !showInfo"  left="0" backgroundColor="#FBDF07" color="white" :top="30"  width="100%"  v-model="selectedDate" @dateChange="dateChanged" :minDate="minDate" :maxDate="maxDate"/>
 
     <!--
     <ContentView height="15%" width="100%" left="0" top="600" backgroundColor="rgba(255, 165, 0, 0.1)">
@@ -165,6 +165,14 @@
                 leftLayersIcon:100,
                 titleApp: null,
                 wdate:null, srcLegend: null};
+        },
+        watch: {
+            showLayers(s) {
+                if (s) {
+                    this.showPickDate = true
+                    this.selectedIndexLayer = appSettings.getNumber("layerIndex");
+                }
+            }
         },
         mounted() {
             console.log('** MAPBOX MOUNTED ***')
