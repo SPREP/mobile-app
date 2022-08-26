@@ -26,7 +26,7 @@
             <Label class="h3 description-label text-center " text="The Joint Research Centre "  height="30" backgroundColor="white" />
             <Label class="h3 description-label text-center " text="of the" height="30" backgroundColor="white" />
             <Label class="h3 description-label text-center " text="European Commission" height="30" backgroundColor="white" />
-            <Label class="h3 description-label text-center " text="" height="100" backgroundColor="white" />
+            <Label class="h3 description-label text-center " text="" height="50" backgroundColor="white" />
             <Label class="h3 text-center " text="Close" height="30" width="200" color="white" backgroundColor="blue" @tap="showInfo=false" />
         </StackLayout>
     </ContentView>
@@ -79,7 +79,8 @@
     </ContentView>
 -->
   <Label v-if="!showInfo" :text="titleApp" left="0" top="0" width="100%" height="30" color="white" class="h3 text-center" backgroundColor="rgba(0, 0, 255, .6)"/>
-  <Image v-if="!showPickDate && !showInfo" :src="srcLegend"  left="0" top="30" width="20%" @tap="onLegendTap" stretch="fill" />
+  <Image src="~/shared/legendIcon96.png"  v-if="!showLayers && !showInfo && !showLegend" :left="15" :top="35" width="10%" @tap="showLegend=!showLegend" stretch="fill" />
+  <Image v-if="!showPickDate && !showInfo && showLegend" :src="srcLegend"  left="0" top="30" width="20%" @tap="onLegendTap" stretch="fill" />
   <Label v-if="!showPickDate  && !showInfo" :text="wdate" :left="leftLayersIcon-80" top="40" width="130" height="30" class="text-center pick-date" @tap="showPickDate=!showPickDate" color="black" backgroundColor="#FBDF07"/>
 
 
@@ -152,6 +153,7 @@
                 showLayers: false,
                 showPickDate: false,
                 showInfo: false,
+                showLegend: false,
                 args: null,
                 dateValueChanged: false,
                 listOfItemsLayerTitle: [],
@@ -170,9 +172,11 @@
             showLayers(s) {
                 if (s) {
                     this.showPickDate = true
+                    this.showLegend = false
                     this.selectedIndexLayer = appSettings.getNumber("layerIndex");
                 }
             }
+            
         },
         mounted() {
             console.log('** MAPBOX MOUNTED ***')
@@ -306,6 +310,15 @@
                 this.titleApp = layerTitle
                 this.wdate = wDate
                 this.selectedDate = wDate
+
+                this.args.map.setCenter(
+                    {
+                        lat: 2.3681990625302096, // mandatory
+                        lng: 18.20708537210865, // mandatory
+                        animated: true // default true
+                    }
+                )
+
 
 
             },
@@ -470,6 +483,10 @@
                     }
                     if(this.showPickDate) {
                         this.showPickDate = false
+                        chgLayer = true
+                    }
+                    if(this.showLegend) {
+                        this.showLegend = false
                         chgLayer = true
                     }
                     if (chgLayer) {
