@@ -54,10 +54,10 @@
 -->
 
 
-    <ListPicker v-if="showLayers && !showInfo" left="0" backgroundColor="rgba(0, 0, 255, .6)" color="white" :top="topListPicker"  width="100%" :items="listOfItemsLayerTitle" :selectedIndex="selectedIndexLayer"
+    <ListPicker v-if="showLayers && !showInfo" @tap="tapList" left="0" backgroundColor="rgba(0, 0, 255, .6)" color="white" :top="topListPicker"  width="100%" :items="listOfItemsLayerTitle" :selectedIndex="selectedIndexLayer"
         @selectedIndexChange="selectedIndexLayerChanged"   />
 
-    <DatePicker v-if="showPickDate && !showInfo"  left="0" backgroundColor="#FBDF07" color="white" :top="30"  width="100%"  v-model="selectedDate" @dateChange="dateChanged" :minDate="minDate" :maxDate="maxDate"/>
+    <DatePicker v-if="showPickDate && !showInfo"  @tap="tapList" left="0" backgroundColor="#FBDF07" color="white" :top="30"  width="100%"  v-model="selectedDate" @dateChange="dateChanged" :minDate="minDate" :maxDate="maxDate"/>
 
     <!--
     <ContentView height="15%" width="100%" left="0" top="600" backgroundColor="rgba(255, 165, 0, 0.1)">
@@ -221,6 +221,29 @@
             console.log('** MAPBOX UN-MOUNTED ***')
         },
         methods: {
+            checkChg: function () {
+                let chgLayer = false
+                if (this.showLayers) {
+                    this.showLayers = false
+                    chgLayer = true
+                }
+                if(this.showPickDate) {
+                    this.showPickDate = false
+                    chgLayer = true
+                }
+                if(this.showLegend) {
+                    this.showLegend = false
+                    chgLayer = true
+                }
+                if (chgLayer) {
+                    this.changeLayer()
+                }
+                return true;
+            },
+            tapList: function(e) {
+                console.log('tap list')
+                this.checkChg()
+            },
             dateChanged: function (dc) {
                 if (this.dateValueChanged) {
                 this.dateValueChanged = false
@@ -318,6 +341,17 @@
                         animated: true // default true
                     }
                 )
+                this.args.map.setViewport(
+                    {
+                        bounds: {
+                        north: 38.27,
+                        east: 57.60,
+                        south: -24.18,
+                        west: -20.62
+                        },
+                        animated: true // default true
+                    }
+                )
 
 
 
@@ -394,51 +428,6 @@
             onMapReady(args) {
                 console.log('*** ADD LAYER ***')
                 this.args = args
-
-                /*
-                const layer = appSettings.getString("layerName") 
-                console.log("*** layer ***")
-                if (typeof layer !== 'undefined') {
-                    console.log(layer)        
-                } else {
-                    console.log("indefinito")
-                    this.onNavigationItemTap(Settings)
-                    return
-                }
-                const layerTitle = appSettings.getString("layerTitle") 
-                console.log("*** layerTitle ***")
-                this.titleApp = layerTitle
-                if (typeof layerTitle !== 'undefined') {
-                    console.log(layerTitle)        
-                } else {
-                    console.log("indefinito")
-                    this.onNavigationItemTap(Settings)
-                    return
-                }
-                this.layerName = layerTitle
-                const source = appSettings.getString("sourceName") 
-                const wDate = appSettings.getString("wDate") 
-                const wd = wDate.replace(/-/g,"")
-                console.log("*** wd ***")
-                if (typeof wd !== 'undefined') {
-                    console.log(wd)        
-                } else {
-                    console.log("indefinito")
-                    this.onNavigationItemTap(Settings)
-                    return
-                }
-                this.wdate = wDate
-                */
-
-                /*
-                // questo è ok
-                let linkTo = "https://estation.jrc.ec.europa.eu/eStation2/webservices?SERVICE=WMS&REQUEST=GetMap&width=736&height=814&FORMAT=image%2Fjpg&WIDTH=256&HEIGHT=256&bbox={bbox-epsg-3857}&CRS=EPSG:3857&LAYERS=" + layer + "&DATE=" + wd
-                // Link fornito da Dario Simonetti con la projection corretta
-                // const linkTo = 'https://ies-ows.jrc.ec.europa.eu/iforce/kwt/wms.py?service=WMS&request=GetMap&layers=Class20&styles=&format=image%2Fpng&transparent=true&version=1.1.1&width=256&height=256&srs=EPSG%3A3857&bbox=4070118.882129066,-78271.51696401955,4148390.3990930864,0'
-                linkTo = 'https://estation.jrc.ec.europa.eu/eStation2/webservices?SERVICE=WMS&VERSION=1.3.0&REQUEST=GetMap&LAYERS=' + layer + '&FORMAT=image%2Fjpg&TRANSPARENT=false&date=' + wd + '&time_to_nocache=1622704629174&WIDTH=256&HEIGHT=256&bbox={bbox-epsg-3857}&CRS=EPSG:3857'
-                console.log(linkTo)
-                this.srcLegend = 'https://estation.jrc.ec.europa.eu/eStation2/webservices?SERVICE=WMS&REQUEST=GetLegendGraphic&LAYERS=' + layer
-                */
                  args.map.setViewport(
                     {
                         bounds: {
@@ -450,30 +439,6 @@
                         animated: true // default true
                     }
                 )
-
-/*
-                args.map.addSource('wms-test-source', {
-                    type: 'raster',
-                    tiles : [
-                        linkTo],
-                        tileSize: 512    
-                    })
-
-// See here for pain raster specification
-// https://docs.mapbox.com/mapbox-gl-js/style-spec/layers/#raster
-
-                args.map.addLayer(
-                    {
-                    id: 'wms-test-layer',
-                    type: 'raster',
-                    source: 'wms-test-source',
-                    paint: {'line-color': '#ff0000',
-                        'raster-opacity': .4,
-                        },
-                    },
-                    'aeroway-line'
-                );
-                */
                 args.map.setOnMapClickListener( point => {
                     console.log(`>> Map clicked: ${JSON.stringify(point)}`);
                     let chgLayer = false
