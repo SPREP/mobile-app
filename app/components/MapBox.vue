@@ -1,17 +1,15 @@
 <template>
     <Page class="page">
-
+<!--
   <ActionBar class="action-bar">
-    <!--
     <NavigationButton visibility="hidden"/>
-    -->
     <GridLayout columns="50, *">
         <Label class="title-bar" height="40" text="Climate Station" colSpan="2"/>
         <Label v-if="!showInfo" class="fas" text.decode="&#xf05a;" color="blue" @tap="showInfo = !showInfo"/>
         <Label v-else class="fas" text.decode="&#xf279;" color="blue" @tap="showInfo = !showInfo"/>
     </GridLayout>
   </ActionBar>
-
+-->
 
 <AbsoluteLayout backgroundColor="#3c495e">
 
@@ -30,7 +28,8 @@
             <Label class="h3 text-center " text="Close" height="30" width="200" color="white" backgroundColor="blue" @tap="showInfo=false" />
         </StackLayout>
     </ContentView>
-    <Image v-if="showInfo" src="~/shared/footerAbout.png" stretch="aspectFit" :top="topLayersIcon" width="100%" height="50" left="0"/>
+    <Image v-if="showInfo" src="~/shared/footerAbout.png" stretch="aspectFit" :top="topLayersIcon-20" width="100%" height="130" left="0"/>
+
     <ContentView v-if="!showInfo" height="100%" width="100%" left="0" top="0">
                 <Mapbox
                     accessToken="pk.eyJ1IjoiYnVjY2kiLCJhIjoiY2w2MHNpZGIxMDJsMDNqbnV0cDV2MDJ6cSJ9.hBDYjKhQ_7BzhSTempdKbg"
@@ -53,36 +52,44 @@
     <Label width="100%" :text="wdate" left="0" top="620"  class="nomeLayer" @tap="onTap"/>
 -->
 
+    <Label v-if="!showInfo" :text="titleApp" left="0" top="0" width="100%" height="30" color="white" class="h3 text-center" backgroundColor="rgba(64, 64, 64, .6)"/>  
+
+    <Image src="~/shared/listIcon.png"  v-if="!showLayers && !showInfo && !showLegend" :left="15" :top="35" width="30" height="40"  @tap="showLegend=!showLegend" stretch="fill" />
+
+
+<ScrollView orientation="vertical" v-if="!showPickDate && !showInfo && showLegend" :height="topLayersIcon-50" :width="leftLayersIcon-120"  left="10" top="35">
+    <Image v-if="!showPickDate && !showInfo && showLegend" :src="srcLegend"  width="400" height="1500" @tap="onLegendTap" stretch="fill" />
+</ScrollView>
+
+
+
+
+
+    <Label v-if="!showPickDate  && !showInfo" :text="wdate" :left="leftLayersIcon-70" top="35" width="130" height="40"  class="text-center pick-date" @tap="showPickDate=!showPickDate" color="black" backgroundColor="#ffffff"/>
+
+    <Image v-if="!showPickDate  && !showInfo" src="~/shared/pickdate.jpg"  :left="leftLayersIcon-100" :top="35" width="40" height="40" @tap="showPickDate=!showPickDate" stretch="fill" />
+
+
+    <DatePicker v-if="showPickDate && !showInfo"  @tap="tapList" left="0" backgroundColor="rgba(255, 255, 255, .95)"  :top="30"  width="100%"  v-model="selectedDate" @dateChange="dateChanged" :minDate="minDate" :maxDate="maxDate"/>
+
 
     <ListPicker v-if="showLayers && !showInfo" @tap="tapList" left="0" backgroundColor="rgba(0, 0, 255, .6)" color="white" :top="topListPicker"  width="100%" :items="listOfItemsLayerTitle" :selectedIndex="selectedIndexLayer"
         @selectedIndexChange="selectedIndexLayerChanged"   />
 
-    <DatePicker v-if="showPickDate && !showInfo"  @tap="tapList" left="0" backgroundColor="#FBDF07" color="white" :top="30"  width="100%"  v-model="selectedDate" @dateChange="dateChanged" :minDate="minDate" :maxDate="maxDate"/>
 
-    <!--
-    <ContentView height="15%" width="100%" left="0" top="600" backgroundColor="rgba(255, 165, 0, 0.1)">
-    <WrapLayout backgroundColor="rgba(255, 165, 0, 0.1)">
-            <StackLayout height="50" width="100%" backgroundColor="rgba(255, 165, 0, 0.1)">
-            </StackLayout>
-    </WrapLayout>
-    </ContentView>
-    -->
-
-  <Image src="~/shared/layers3.png"  v-if="!showLayers && !showInfo" :left="leftLayersIcon" :top="topLayersIcon" width="10%" @tap="showLayers=!showLayers" stretch="fill" />
-
-    <!--
-    <ContentView height="50" width="100%" left="0" top="600">
-      <WrapLayout backgroundColor="#000000"  >
-        <Label text="Change Layer/Date" class="h3 text-center" width="50%" height="100%" backgroundColor="red" color="white"  @tap="onTap"/>
-        <Label text="Info" class="h3 text-center" width="50%" height="100%" backgroundColor="green" color="white"  @tap="goInfo"/>
-      </WrapLayout>
-    </ContentView>
+<!--
+    <Label :text="titleApp" left="0" top="150" width="100%" height="30" color="white" class="h3 text-center" backgroundColor="rgba(64, 64, 64, .6)"/>  
+    <Label :text="wdate" left="0" top="180" width="100%" height="30" color="white" class="h3 text-center" backgroundColor="rgba(64, 64, 64, .6)"/>  
+    <Label :text="selectedDate" left="0" top="210" width="100%" height="30" color="white" class="h3 text-center" backgroundColor="rgba(64, 64, 64, .6)"/>  
 -->
-  <Label v-if="!showInfo" :text="titleApp" left="0" top="0" width="100%" height="30" color="white" class="h3 text-center" backgroundColor="rgba(0, 0, 255, .6)"/>
-  <Image src="~/shared/legendIcon96.png"  v-if="!showLayers && !showInfo && !showLegend" :left="15" :top="35" width="10%" @tap="showLegend=!showLegend" stretch="fill" />
-  <Image v-if="!showPickDate && !showInfo && showLegend" :src="srcLegend"  left="0" top="30" width="20%" @tap="onLegendTap" stretch="fill" />
-  <Label v-if="!showPickDate  && !showInfo" :text="wdate" :left="leftLayersIcon-80" top="40" width="130" height="30" class="text-center pick-date" @tap="showPickDate=!showPickDate" color="black" backgroundColor="#FBDF07"/>
 
+
+
+
+<!-- <Label left="30" :top="topLayersIcon" class="fas h2" text.decode="&#xf05a;" color="rgba(25, 25, 200, .6)" width="50" @tap="showInfo = !showInfo"/> -->
+    <Image src="~/shared/infoIcon.png" v-if="!showLayers && !showInfo" left="30" :top="topLayersIcon" color="rgba(25, 25, 200, .6)" width="40" @tap="showInfo = !showInfo"/>
+
+    <Image src="~/shared/layers2.png"  v-if="!showLayers && !showInfo" :left="leftLayersIcon" :top="topLayersIcon" width="40" @tap="showLayers=!showLayers" stretch="fill" />
 
   <!--
   <Label text="10,10" left="10" top="10" width="100" height="100" backgroundColor="rgba(255, 165, 0, 0.1)"/>
@@ -190,9 +197,9 @@
             console.log('screen.mainScreen.heightPixels')
             console.log(screen.mainScreen.heightPixels)
 
-            this.topLayersIcon = screen.mainScreen.heightDIPs - 180
+            this.topLayersIcon = screen.mainScreen.heightDIPs - 140
             this.leftLayersIcon = screen.mainScreen.widthDIPs - 70
-            this.topListPicker = screen.mainScreen.heightDIPs - 280
+            this.topListPicker = screen.mainScreen.heightDIPs - 250
 
             let arr = capabilities.WMT_MS_Capabilities.Capability.Layer.Layer
             arr.sort((a, b) => (a.Title > b.Title ? 1 : b.Title > a.Title ? -1 : 0));
@@ -246,8 +253,8 @@
             },
             dateChanged: function (dc) {
                 if (this.dateValueChanged) {
-                this.dateValueChanged = false
-                return
+                    this.dateValueChanged = false
+                    return
                 }
                 console.log("*** dateChanged ***")
                 console.log(this.selectedDate)        
@@ -256,31 +263,33 @@
                 console.log(wDate)        
 
                 if (this.layerChanged) {
-                this.dateValueChanged = true
-                this.layerChanged = false
-                this.selectedDate = wDate
-                return
+                    this.dateValueChanged = true
+                    this.layerChanged = false
+                    this.selectedDate = wDate
+                    this.wdate = wDate
+                    return
                 }
 
 
                 if (!this.beforeMount) {
-                // console.log(this.selectedDate)
-                const birthday = new Date(this.selectedDate);
-                const day = birthday.getDate()
-                const month = birthday.getMonth()+1
-                const year = birthday.getYear() + 1900
-                let strDate = year.toString() + '-' 
-                if (month < 10) {
-                    strDate +=  '0'
-                }
-                strDate += month.toString() + '-'
-                if (day < 10) {
-                    strDate +=  '0'
-                }
-                strDate += day.toString()
-                console.log("*** DATE CHANGED ***")
-                console.log(strDate)
-                appSettings.setString("wDate", strDate);
+                    // console.log(this.selectedDate)
+                    const birthday = new Date(this.selectedDate);
+                    const day = birthday.getDate()
+                    const month = birthday.getMonth()+1
+                    const year = birthday.getYear() + 1900
+                    let strDate = year.toString() + '-' 
+                    if (month < 10) {
+                        strDate +=  '0'
+                    }
+                    strDate += month.toString() + '-'
+                    if (day < 10) {
+                        strDate +=  '0'
+                    }
+                    strDate += day.toString()
+                    console.log("*** DATE CHANGED ***")
+                    console.log(strDate)
+                    appSettings.setString("wDate", strDate);
+                    this.wdate = wDate
                 }
             },
 
@@ -502,6 +511,7 @@
     .pick-date {
         font-weight: 700;
         font-size: x-large;
+        padding-top:7;
     }
 
 </style>

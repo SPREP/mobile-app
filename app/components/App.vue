@@ -1,12 +1,15 @@
 <template lang="html">
+    <!--
     <RadSideDrawer ref="drawer" drawerLocation="Left" gesturesEnabled="true" :drawerTransition="transition">
         <StackLayout ~drawerContent backgroundColor="#ffffff">
             <DrawerContent/>
         </StackLayout>
         <Frame ~mainContent ref="drawerMainContent">
+    -->
             <MapBox/>
-        </Frame>
+<!--        </Frame> 
     </RadSideDrawer>
+-->
 </template>
 
 <script>
