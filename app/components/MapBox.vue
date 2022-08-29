@@ -89,7 +89,7 @@
 <!-- <Label left="30" :top="topLayersIcon" class="fas h2" text.decode="&#xf05a;" color="rgba(25, 25, 200, .6)" width="50" @tap="showInfo = !showInfo"/> -->
     <Image src="~/shared/infoIcon.png" v-if="!showLayers && !showInfo" left="30" :top="topLayersIcon" color="rgba(25, 25, 200, .6)" width="40" @tap="showInfo = !showInfo"/>
 
-    <Image src="~/shared/layers2.png"  v-if="!showLayers && !showInfo" :left="leftLayersIcon" :top="topLayersIcon" width="40" @tap="showLayers=!showLayers" stretch="fill" />
+    <Image src="~/shared/layers2.png"  v-if="!showLayers && !showInfo" :left="leftLayersIcon" :top="topLayersIcon" width="40" height="40" @tap="showLayers=!showLayers" stretch="fill" />
 
   <!--
   <Label text="10,10" left="10" top="10" width="100" height="100" backgroundColor="rgba(255, 165, 0, 0.1)"/>
