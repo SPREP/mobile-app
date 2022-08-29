@@ -62,12 +62,9 @@
 </ScrollView>
 
 
-
-
-
-    <Label v-if="!showPickDate  && !showInfo" :text="wdate" :left="leftLayersIcon-70" top="35" width="130" height="40"  class="text-center pick-date" @tap="showPickDate=!showPickDate" color="black" backgroundColor="#ffffff"/>
-
-    <Image v-if="!showPickDate  && !showInfo" src="~/shared/pickdate.jpg"  :left="leftLayersIcon-100" :top="35" width="40" height="40" @tap="showPickDate=!showPickDate" stretch="fill" />
+    <Label v-if="!showPickDate  && !showInfo" :text="wdate" :left="leftLayersIcon-70" top="35" width="130" height="40"  class="text-center pick-date" @tap="showPickDate=!showPickDate" color="black" backgroundColor="rgba(200, 200, 200, .6)"/>
+    <Label v-if="!showPickDate  && !showInfo" text="" :left="leftLayersIcon-100" :top="35" width="40" height="40"  @tap="showPickDate=!showPickDate" color="black" backgroundColor="rgba(200, 200, 200, .6)"/>
+    <Image v-if="!showPickDate  && !showInfo" src="~/shared/pickdateIcon.png"  :left="leftLayersIcon-95" :top="37" width="35" height="35" @tap="showPickDate=!showPickDate" stretch="fill" />
 
 
     <DatePicker v-if="showPickDate && !showInfo"  @tap="tapList" left="0" backgroundColor="rgba(255, 255, 255, .95)"  :top="30"  width="100%"  v-model="selectedDate" @dateChange="dateChanged" :minDate="minDate" :maxDate="maxDate"/>
