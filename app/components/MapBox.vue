@@ -40,21 +40,16 @@
                     zoomLevel="1.8"
                     showUserLocation="false"
                     disableZoom="false"
-                    disableRotation="false"
+                    disableRotation="true"
                     disableScroll="false"
-                    disableTilt="false"
+                    disableTilt="true"
                     @mapReady="onMapReady($event)">
                 </Mapbox>
     </ContentView>
 
-<!--
-    <Label width="100%" :text="layerName" left="0" top="600"   class="nomeLayer" @tap="onTap"/>
-    <Label width="100%" :text="wdate" left="0" top="620"  class="nomeLayer" @tap="onTap"/>
--->
-
     <Label v-if="!showInfo" :text="titleApp" left="0" top="0" width="100%" height="30" color="white" class="h3 text-center" backgroundColor="rgba(64, 64, 64, .6)"/>  
 
-    <Image src="~/shared/listIcon.png"  v-if="!showLayers && !showInfo && !showLegend" :left="15" :top="35" width="30" height="40"  @tap="showLegend=!showLegend" stretch="fill" />
+    <Image src="~/shared/listIcon.png"  v-if="!showLayers && !showInfo && !showLegend" :left="15" :top="35" width="30" height="40"  @tap="showLegendView" stretch="fill" />
 
 
 <ScrollView orientation="vertical" v-if="!showPickDate && !showInfo && showLegend" :height="topLayersIcon-50" :width="leftLayersIcon-120"  left="10" top="35">
@@ -62,9 +57,9 @@
 </ScrollView>
 
 
-    <Label v-if="!showPickDate  && !showInfo" :text="wdate" :left="leftLayersIcon-70" top="35" width="130" height="40"  class="text-center pick-date" @tap="showPickDate=!showPickDate" color="black" backgroundColor="rgba(200, 200, 200, .6)"/>
-    <Label v-if="!showPickDate  && !showInfo" text="" :left="leftLayersIcon-100" :top="35" width="40" height="40"  @tap="showPickDate=!showPickDate" color="black" backgroundColor="rgba(200, 200, 200, .6)"/>
-    <Image v-if="!showPickDate  && !showInfo" src="~/shared/pickdateIcon.png"  :left="leftLayersIcon-95" :top="37" width="35" height="35" @tap="showPickDate=!showPickDate" stretch="fill" />
+    <Label v-if="!showPickDate  && !showInfo" :text="wdate" :left="leftLayersIcon-70" top="35" width="130" height="40"  class="text-center pick-date" @tap="showPickDateSelection" color="black" backgroundColor="rgba(200, 200, 200, .6)"/>
+    <Label v-if="!showPickDate  && !showInfo" text="" :left="leftLayersIcon-100" :top="35" width="40" height="40"  @tap="showPickDateSelection" color="black" backgroundColor="rgba(200, 200, 200, .6)"/>
+    <Image v-if="!showPickDate  && !showInfo" src="~/shared/pickdateIcon.png"  :left="leftLayersIcon-95" :top="37" width="35" height="35" @tap="showPickDateSelection" stretch="fill" />
 
 
     <DatePicker v-if="showPickDate && !showInfo"  @tap="tapList" left="0" backgroundColor="rgba(255, 255, 255, .95)"  :top="30"  width="100%"  v-model="selectedDate" @dateChange="dateChanged" :minDate="minDate" :maxDate="maxDate"/>
@@ -73,46 +68,14 @@
     <ListPicker v-if="showLayers && !showInfo" @tap="tapList" left="0" backgroundColor="rgba(0, 0, 255, .6)" color="white" :top="topListPicker"  width="100%" :items="listOfItemsLayerTitle" :selectedIndex="selectedIndexLayer"
         @selectedIndexChange="selectedIndexLayerChanged"   />
 
-
 <!--
-    <Label :text="titleApp" left="0" top="150" width="100%" height="30" color="white" class="h3 text-center" backgroundColor="rgba(64, 64, 64, .6)"/>  
-    <Label :text="wdate" left="0" top="180" width="100%" height="30" color="white" class="h3 text-center" backgroundColor="rgba(64, 64, 64, .6)"/>  
-    <Label :text="selectedDate" left="0" top="210" width="100%" height="30" color="white" class="h3 text-center" backgroundColor="rgba(64, 64, 64, .6)"/>  
+    <Label :text="connectionType" :left="leftLayersIcon/2-50" :top="topLayersIcon" width="100" height="40"  class="text-center"  color="black" backgroundColor="rgba(200, 200, 200, .6)"/>
 -->
-
-
-
-
-<!-- <Label left="30" :top="topLayersIcon" class="fas h2" text.decode="&#xf05a;" color="rgba(25, 25, 200, .6)" width="50" @tap="showInfo = !showInfo"/> -->
     <Image src="~/shared/infoIcon.png" v-if="!showLayers && !showInfo" left="30" :top="topLayersIcon" color="rgba(25, 25, 200, .6)" width="40" @tap="showInfo = !showInfo"/>
 
-    <Image src="~/shared/layers2.png"  v-if="!showLayers && !showInfo" :left="leftLayersIcon" :top="topLayersIcon" width="40" height="40" @tap="showLayers=!showLayers" stretch="fill" />
+    <Image src="~/shared/layers2.png"  v-if="!showLayers && !showInfo" :left="leftLayersIcon" :top="topLayersIcon" width="40" height="40" @tap="showLayersChoice" stretch="fill" />
 
-  <!--
-  <Label text="10,10" left="10" top="10" width="100" height="100" backgroundColor="rgba(255, 165, 0, 0.1)"/>
-  <Label text="30,40" left="30" top="40" width="100" height="100" backgroundColor="#43b883"/>
-  -->
 </AbsoluteLayout>
-
-
-<!--
-        <GridLayout>
-                <Mapbox
-                    accessToken="pk.eyJ1IjoiYnVjY2kiLCJhIjoiY2w2MHNpZGIxMDJsMDNqbnV0cDV2MDJ6cSJ9.hBDYjKhQ_7BzhSTempdKbg"
-                    mapStyle="naturalEarth"                    
-                    latitude="2.3681990625302096"
-                    longitude="18.20708537210865"
-                    hideCompass="true"
-                    zoomLevel="1.8"
-                    showUserLocation="false"
-                    disableZoom="false"
-                    disableRotation="false"
-                    disableScroll="false"
-                    disableTilt="false"
-                    @mapReady="onMapReady($event)">
-                </Mapbox>
-        </GridLayout>
--->
 
 
     </Page>
@@ -132,6 +95,7 @@
   import About from "./About";
   // const platform = require("platform")
   import capabilities from  "~/shared/capabilities.json";
+  import { Connectivity } from '@nativescript/core'
 
   import { screen } from '@nativescript/core/platform'
 
@@ -170,6 +134,7 @@
                 topListPicker:100,
                 leftLayersIcon:100,
                 titleApp: null,
+                connectionType: '',
                 wdate:null, srcLegend: null};
         },
         watch: {
@@ -225,6 +190,63 @@
             console.log('** MAPBOX UN-MOUNTED ***')
         },
         methods: {
+            showPickDateSelection: function () {
+                if (this.checkConnection()) {
+                    this.showPickDate = !this.showPickDate
+                }
+            },
+            showLegendView: function () {
+                if (this.checkConnection()) {
+                    this.showLegend = !this.showLegend
+                }
+            },
+            showLayersChoice: function () {
+                if (this.checkConnection()) {
+                    this.showLayers=!this.showLayers
+                }
+            },
+            checkConnection: function () {
+                console.log('** CHECK CONNECTION  ***')
+                const type = Connectivity.getConnectionType()
+                console.log(type)
+                switch (type) {
+                    case Connectivity.connectionType.none:
+                    this.connectionType = 'NO CONNECTION!!!' 
+                    console.log('No connection')
+                    alert({
+                        title: "NO INTERNET CONNECTION!",
+                        message: "This App requires Internet connectivity. Check your device and retry.",
+                        okButtonText: "Close"
+                        }).then(() => {
+                        console.log("Alert dialog closed");
+                        });
+                    return false
+                    break
+                    case Connectivity.connectionType.wifi:
+                    this.connectionType = 'WIFI' 
+                    console.log('WiFi connection')
+                    break
+                    case Connectivity.connectionType.vpn:
+                    this.connectionType = 'VPN' 
+                    console.log('VPN connection')
+                    break
+                    case Connectivity.connectionType.mobile:
+                    console.log('Mobile connection')
+                    this.connectionType = 'MOBILE' 
+                    break
+                    case Connectivity.connectionType.ethernet:
+                    console.log('Ethernet connection')
+                    this.connectionType = 'ETHERNET' 
+                    break
+                    case Connectivity.connectionType.bluetooth:
+                    console.log('Bluetooth connection')
+                    this.connectionType = 'BLUETOOTH' 
+                    break
+                    default:
+                    break
+                }
+                return true
+            },
             checkChg: function () {
                 let chgLayer = false
                 if (this.showLayers) {
@@ -240,7 +262,9 @@
                     chgLayer = true
                 }
                 if (chgLayer) {
-                    this.changeLayer()
+                    if (this.checkConnection()) {
+                        this.changeLayer()
+                    }
                 }
                 return true;
             },
@@ -266,7 +290,6 @@
                     this.wdate = wDate
                     return
                 }
-
 
                 if (!this.beforeMount) {
                     // console.log(this.selectedDate)
@@ -359,8 +382,6 @@
                     }
                 )
 
-
-
             },
             selectedIndexLayerChanged: function (e) {
                 console.log('*** valori letti da preferenze ***')
@@ -393,10 +414,7 @@
                     appSettings.setNumber("layerIndex", e.value);
                     appSettings.setString("layerName", this.listOfItemsLayer[e.value]);
                     appSettings.setString("layerTitle", this.listOfItemsLayerTitle[e.value]);
-
-
                     this.titleApp = this.listOfItemsLayerTitle[e.value]
-
                     // appSettings.setString("layerMinDate", this.listOfItemsLayerTitle[e.value]);
                     console.log(this.listOfItemsLayerExtent[e.value])
                     this.layerTitle = this.listOfItemsLayerTitle[e.value]
@@ -461,7 +479,9 @@
                         chgLayer = true
                     }
                     if (chgLayer) {
-                        this.changeLayer()
+                        if (this.checkConnection()) {
+                            this.changeLayer()
+                        }
                     }
                     return true;
                 });
@@ -470,7 +490,6 @@
                     console.log(`>> Map longpressed: ${JSON.stringify(point)}`);
                     return true;
                 });
-
 
                 args.map.setOnFlingListener(() => {
                     console.log(`>> Map flinged"`);
