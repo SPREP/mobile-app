@@ -13,18 +13,19 @@
 
 <AbsoluteLayout backgroundColor="#3c495e">
 
-    <ContentView v-if="showInfo" height="100%" width="100%" left="0" top="0" backgroundColor="white">
+    <ContentView v-if="showInfo" height="100%" width="100%" left="0" top="0" backgroundColor="rgba(255, 255, 255, .85)">
       <StackLayout>
-            <Label class="h3 description-label text-center " text=" " height="30" backgroundColor="white" />
+            <!-- <Label class="h3 description-label text-center " text=" " height="30"  /> -->
             <Image src="~/shared/logoAbout.png" />
-            <Label class="h3 description-label text-center " text=" "  height="50" backgroundColor="white" />
-            <Label class="h2 description-label text-center " text="Climate Station"  height="40" backgroundColor="white" />
-            <Label class="h2 description-label text-center " text="Mobile App"  height="40" backgroundColor="white" />
-            <Label class="h3 description-label text-center " text=" "  height="30" backgroundColor="white" />
-            <Label class="h3 description-label text-center " text="The Joint Research Centre "  height="30" backgroundColor="white" />
-            <Label class="h3 description-label text-center " text="of the" height="30" backgroundColor="white" />
-            <Label class="h3 description-label text-center " text="European Commission" height="30" backgroundColor="white" />
-            <Label class="h3 description-label text-center " text="" height="50" backgroundColor="white" />
+            <Label class="h3 description-label text-center " text=" "  height="50"  />
+            <Label class="h2 description-label text-center " text="Climate Station"  height="40"  />
+            <Label class="h2 description-label text-center " text="Mobile App"  height="40"  />
+            <Label class="h3 description-label text-center " text=" "  height="30"  />
+            <Label class="h3 description-label text-center " text="The Joint Research Centre "  height="30"  />
+            <Label class="h3 description-label text-center " text="of the" height="30"  />
+            <Label class="h3 description-label text-center " text="European Commission" height="50"  />
+            <Label class="h5 description-label text-center " text="(ver. 0.1.02 02/09/2022)" height="30"  />
+            <Label class="h3 description-label text-center " text="" height="50"  />
             <Label class="h3 text-center " text="Close" height="30" width="200" color="white" backgroundColor="blue" @tap="showInfo=false" />
         </StackLayout>
     </ContentView>
@@ -53,7 +54,9 @@
 
 
 <ScrollView orientation="vertical" v-if="!showPickDate && !showInfo && showLegend" :height="topLayersIcon-50" :width="leftLayersIcon-120"  left="10" top="35">
-    <Image v-if="!showPickDate && !showInfo && showLegend" :src="srcLegend"  width="400" height="1500" @tap="onLegendTap" stretch="fill" />
+<!--    <Image v-if="!showPickDate && !showInfo && showLegend" :src="srcLegend"  width="400" height="1500" @tap="onLegendTap" stretch="fill" /> -->
+
+    <HtmlView :html="htmlLegend" />
 </ScrollView>
 
 
@@ -99,6 +102,9 @@
 
   import { screen } from '@nativescript/core/platform'
 
+  import { Http, HttpResponse } from '@nativescript/core'
+
+
   const appSettings = require("@nativescript/core/application-settings");
 
      export default {
@@ -135,6 +141,7 @@
                 leftLayersIcon:100,
                 titleApp: null,
                 connectionType: '',
+                htmlLegend: '<div><h1>HtmlView</h1></div>',
                 wdate:null, srcLegend: null};
         },
         watch: {
@@ -149,7 +156,7 @@
         },
         mounted() {
             console.log('** MAPBOX MOUNTED ***')
-
+            let self = this
             console.log('screen.mainScreen.widthDIPs')
             console.log(screen.mainScreen.widthDIPs)
             console.log('screen.mainScreen.widthPixels')
@@ -182,6 +189,21 @@
             console.log(setData)
             console.log("================")
             this.selectedDate = setData
+
+            Http.request({
+                url: 'https://httpbin.org/get',
+                method: 'GET'
+            }).then(
+                (response) => {
+                    // Argument (response) is HttpResponse
+                    console.log(`Response Status Code: ${response.statusCode}`)
+                    console.log(`Response Headers:`, response.headers)
+                    console.log(`Response Content: ${response.content}`)
+                    self.htmlLegend = `${response.content}`
+            },
+            e => {}
+            )
+
 
             this.beforeMount = false
 
