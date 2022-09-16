@@ -53,10 +53,12 @@
     <Image src="~/shared/listIcon.png"  v-if="!showLayers && !showInfo && !showLegend" :left="15" :top="35" width="30" height="40"  @tap="showLegendView" stretch="fill" />
 
 
-<ScrollView orientation="vertical" v-if="!showPickDate && !showInfo && showLegend" :height="topLayersIcon-50" :width="leftLayersIcon-120"  left="10" top="35">
+<ScrollView orientation="vertical" v-if="!showPickDate && !showInfo && showLegend" :height="topLayersIcon-250" :width="leftLayersIcon-180"  left="10" top="35">
 <!--    <Image v-if="!showPickDate && !showInfo && showLegend" :src="srcLegend"  width="400" height="1500" @tap="onLegendTap" stretch="fill" /> -->
-
+<!--
     <HtmlView :html="htmlLegend" />
+-->
+    <WebView :src="htmlLegend" />    
 </ScrollView>
 
 
@@ -191,15 +193,17 @@
             this.selectedDate = setData
 
             Http.request({
-                url: 'https://httpbin.org/get',
+                url: 'https://estation.jrc.ec.europa.eu/eStation2/mobile-app/legend-html?product_id=layer_modis-fapar_1.0_10dmax',
                 method: 'GET'
             }).then(
                 (response) => {
                     // Argument (response) is HttpResponse
-                    console.log(`Response Status Code: ${response.statusCode}`)
-                    console.log(`Response Headers:`, response.headers)
-                    console.log(`Response Content: ${response.content}`)
-                    self.htmlLegend = `${response.content}`
+                    // console.log(`Response Status Code: ${response.statusCode}`)
+                    // console.log(`Response Headers:`, response.headers)
+                    // console.log(`Response Content: ${response.content}`)
+                    let htmlLegendObj = JSON.parse(`${response.content}`)
+                    console.log(htmlLegendObj.html.legendHTMLVertical)
+                    self.htmlLegend = htmlLegendObj.html.legendHTMLVertical
             },
             e => {}
             )
