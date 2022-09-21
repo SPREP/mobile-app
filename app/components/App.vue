@@ -6,7 +6,7 @@
         </StackLayout>
         <Frame ~mainContent ref="drawerMainContent">
     -->
-            <MapBox/>
+            <MapBox :categories="categories" :collections="collections"/>
 <!--        </Frame> 
     </RadSideDrawer>
 -->
@@ -17,10 +17,15 @@
   import MapBox from './MapBox'
   import { SlideInOnTopTransition } from 'nativescript-ui-sidedrawer';
   import { Connectivity } from '@nativescript/core'
+  import { Http, HttpResponse } from '@nativescript/core'
+  // import { runInThisContext } from 'vm';
+
 
   export default {
     data() {
       return {
+        categories: null,
+        collections: null,
         transition: new SlideInOnTopTransition()
       }
     },
@@ -58,6 +63,46 @@
         default:
           break
       }
+
+      // Read all features
+      // https://estation.jrc.ec.europa.eu/eStation2//mobile-app/collections
+
+
+      Http.request({
+                url: 'https://estation.jrc.ec.europa.eu/eStation2//mobile-app/collections',
+                method: 'GET'
+            }).then(
+                (response) => {
+                    // Argument (response) is HttpResponse
+                    // console.log(`Response Status Code: ${response.statusCode}`)
+                    // console.log(`Response Headers:`, response.headers)
+                    // console.log(`Response Content: ${response.content}`)
+                    let objRet = JSON.parse(`${response.content}`)
+                    let objStruct = {}
+
+                    console.log(objRet.products.length)
+                    for (let o of objRet.products) {
+                      if (!objStruct[o.category]) {
+                        objStruct[o.category] = []
+                      }
+                      objStruct[o.category].push(o)
+                      // console.log(o.category)
+                    }
+                    console.log(objStruct)
+                    console.log(Object.keys(objStruct))
+
+                    this.collections = objStruct
+                    this.categories = Object.keys(objStruct)
+
+                    for (let c of Object.keys(objStruct)) {
+                      console.log(c)
+                      // console.log(objStruct[o.category])
+                    }
+           },
+            e => {}
+            )
+
+
 
       /*
         Connectivity.startMonitoring(newConnectionType => {

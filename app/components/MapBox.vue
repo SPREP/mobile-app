@@ -48,12 +48,14 @@
                 </Mapbox>
     </ContentView>
 
-    <Label v-if="!showInfo" :text="titleApp" left="0" top="0" width="100%" height="30" color="white" class="h3 text-center" backgroundColor="rgba(64, 64, 64, .6)"/>  
+    <Label v-if="!showInfo" :text="categoryName.toUpperCase()" left="0" top="0" width="100%" height="30" color="rgb(113,250,35)" class="h3 text-center" backgroundColor="rgba(0, 0, 0, 1)"/>  
+    <Label v-if="!showInfo" :text="titleApp" left="0" top="30" width="100%" height="30" color="rgb(220,157,251)" class="h3 text-center" backgroundColor="rgba(0, 0, 0, .8)"/>  
+    <Label v-if="!showInfo" :text="selectedDate" left="0" top="60" width="100%" height="30" color="rgb(252,254,123)" class="h3 text-center" backgroundColor="rgba(0, 0, 0, .8)"/>  
 
-    <Image src="~/shared/listIcon.png"  v-if="!showLayers && !showInfo && !showLegend" :left="15" :top="35" width="30" height="40"  @tap="showLegendView" stretch="fill" />
+    <Image src="~/shared/listIcon.png"  v-if="!showLayers && !showInfo && !showLegend && false" :left="15" :top="65" width="30" height="40"  @tap="showLegendView" stretch="fill" />
 
 
-<ScrollView orientation="vertical" v-if="!showPickDate && !showInfo && showLegend" :height="topLayersIcon-250" :width="leftLayersIcon-180"  left="10" top="35">
+<ScrollView orientation="vertical" v-if="!showPickDate && !showInfo && false" :height="topLayersIcon-250" :width="leftLayersIcon-180"  left="10" top="35">
 <!--    <Image v-if="!showPickDate && !showInfo && showLegend" :src="srcLegend"  width="400" height="1500" @tap="onLegendTap" stretch="fill" /> -->
 <!--
     <HtmlView :html="htmlLegend" />
@@ -61,17 +63,28 @@
     <WebView :src="htmlLegend" />    
 </ScrollView>
 
-
-    <Label v-if="!showPickDate  && !showInfo" :text="wdate" :left="leftLayersIcon-70" top="35" width="130" height="40"  class="text-center pick-date" @tap="showPickDateSelection" color="black" backgroundColor="rgba(200, 200, 200, .6)"/>
-    <Label v-if="!showPickDate  && !showInfo" text="" :left="leftLayersIcon-100" :top="35" width="40" height="40"  @tap="showPickDateSelection" color="black" backgroundColor="rgba(200, 200, 200, .6)"/>
-    <Image v-if="!showPickDate  && !showInfo" src="~/shared/pickdateIcon.png"  :left="leftLayersIcon-95" :top="37" width="35" height="35" @tap="showPickDateSelection" stretch="fill" />
+<!-- <WebView :src="htmlLegend" left="10" top="65" :height="topLayersIcon-400" :width="leftLayersIcon-220" />    -->
+<WebView :src="htmlLegend" left="10" top="95" :height="250" :width="100" />    
 
 
-    <DatePicker v-if="showPickDate && !showInfo"  @tap="tapList" left="0" backgroundColor="rgba(255, 255, 255, .95)"  :top="30"  width="100%"  v-model="selectedDate" @dateChange="dateChanged" :minDate="minDate" :maxDate="maxDate"/>
+    <Label v-if="!showPickDate  && !showInfo" :text="wdate" :left="leftLayersIcon-70" top="95" width="130" height="40"  class="text-center pick-date" @tap="showPickDateSelection" color="black" backgroundColor="rgba(200, 200, 200, .6)"/>
+    <Label v-if="!showPickDate  && !showInfo" text="" :left="leftLayersIcon-100" :top="95" width="40" height="40"  @tap="showPickDateSelection" color="black" backgroundColor="rgba(200, 200, 200, .6)"/>
+    <Image v-if="!showPickDate  && !showInfo" src="~/shared/pickdateIcon.png"  :left="leftLayersIcon-95" :top="97" width="35" height="35" @tap="showPickDateSelection" stretch="fill" />
 
 
-    <ListPicker v-if="showLayers && !showInfo" @tap="tapList" left="0" backgroundColor="rgba(0, 0, 255, .6)" color="white" :top="topListPicker"  width="100%" :items="listOfItemsLayerTitle" :selectedIndex="selectedIndexLayer"
+    <DatePicker v-if="showPickDate && !showInfo && false"  @tap="tapList" left="0" backgroundColor="rgba(255, 255, 255, .95)"  :top="topListPicker"  width="100%"  v-model="selectedDate" @dateChange="dateChanged" :minDate="minDate" :maxDate="maxDate"/>
+
+
+    <ListPicker v-if="showLayers && !showInfo"  @tap="tapList" left="0" backgroundColor="rgba(41, 92, 40, .99)" color="white" :top="90"  width="100%" :items="categories" :selectedIndex="selectedIndexCategory"
+        @selectedIndexChange="selectedIndexCategoryChanged"   />
+
+
+    <ListPicker v-if="showLayers && !showInfo" @tap="tapList" left="0" backgroundColor="rgba(0, 0, 255, .99)" color="white" :top="270"  width="100%" :items="listOfItemsLayerTitle" :selectedIndex="selectedIndexLayer"
         @selectedIndexChange="selectedIndexLayerChanged"   />
+
+        <ListPicker v-if="showLayers && !showInfo" @tap="tapList" left="0" backgroundColor="rgba(0, 0, 0, .99)" color="white" :top="450"  width="100%" :items="listAvailableDates" :selectedIndex="selectedIndexDate"
+        @selectedIndexChange="selectedIndexDateChanged"   />
+
 
 <!--
     <Label :text="connectionType" :left="leftLayersIcon/2-50" :top="topLayersIcon" width="100" height="40"  class="text-center"  color="black" backgroundColor="rgba(200, 200, 200, .6)"/>
@@ -107,22 +120,41 @@
   import { Http, HttpResponse } from '@nativescript/core'
 
 
+
+
   const appSettings = require("@nativescript/core/application-settings");
 
      export default {
+        props: { collections: Object,  categories: Array},
         data () {
-            let layer = null;
+            let layer = null
+            let category = null
             try {
                 layer = appSettings.getNumber("layerIndex");
             } catch (error) {
                 console.log(error)
             }
-            console.log('*** DATA ***')
+            console.log('*** layer index ***')
             console.log(layer)
+
+            category = 0
+            try {
+                category = appSettings.getNumber("categoryIndex");
+            } catch (error) {
+                console.log(error)
+            }
+            console.log('*** category index ***')
+            console.log(category)
+
+
+            let catName = appSettings.getString("categoryName");
+
+
 
             return {
                 layerTitle: '',
                 layerName: '',
+                categoryName: catName,
                 minDate: '',
                 maxDate: '',
                 layer: null,
@@ -135,15 +167,19 @@
                 listOfItemsLayerTitle: [],
                 listOfItemsLayer: [],
                 listOfItemsLayerExtent: [],
+                listAvailableDates: [],
                 selectedIndexLayer: layer,
+                selectedIndexCategory: category,
                 selectedDate:'2000-01-01',
+
                 beforeMount: true,
                 topLayersIcon:100,
                 topListPicker:100,
                 leftLayersIcon:100,
                 titleApp: null,
                 connectionType: '',
-                htmlLegend: '<div><h1>HtmlView</h1></div>',
+                selectedIndexDate: null,
+                htmlLegend: '',
                 wdate:null, srcLegend: null};
         },
         watch: {
@@ -159,6 +195,7 @@
         mounted() {
             console.log('** MAPBOX MOUNTED ***')
             let self = this
+
             console.log('screen.mainScreen.widthDIPs')
             console.log(screen.mainScreen.widthDIPs)
             console.log('screen.mainScreen.widthPixels')
@@ -172,6 +209,7 @@
             this.leftLayersIcon = screen.mainScreen.widthDIPs - 70
             this.topListPicker = screen.mainScreen.heightDIPs - 250
 
+            /*
             let arr = capabilities.WMT_MS_Capabilities.Capability.Layer.Layer
             arr.sort((a, b) => (a.Title > b.Title ? 1 : b.Title > a.Title ? -1 : 0));
             for (let l of arr) {
@@ -207,7 +245,7 @@
             },
             e => {}
             )
-
+            */
 
             this.beforeMount = false
 
@@ -299,6 +337,9 @@
                 this.checkChg()
             },
             dateChanged: function (dc) {
+                /*
+                console.log("*** dateChanged ***")
+                console.log(this.selectedDate)        
                 if (this.dateValueChanged) {
                     this.dateValueChanged = false
                     return
@@ -337,9 +378,12 @@
                     appSettings.setString("wDate", strDate);
                     this.wdate = wDate
                 }
+                */
             },
 
             changeLayer: function () {
+                let self = this
+                /*
                 console.log('*** valori letti da preferenze ***')
                 const layer = appSettings.getString("layerName") 
                 console.log("*** layer ***")
@@ -362,8 +406,19 @@
                     this.onNavigationItemTap(Settings)
                     return
                 }
+                */
 
-                let linkTo = 'https://estation.jrc.ec.europa.eu/eStation2/webservices?SERVICE=WMS&VERSION=1.3.0&REQUEST=GetMap&LAYERS=' + layer + '&FORMAT=image%2Fjpg&TRANSPARENT=false&date=' + wd + '&time_to_nocache=1622704629174&WIDTH=256&HEIGHT=256&bbox={bbox-epsg-3857}&CRS=EPSG:3857'
+                // let urlToGo = appSettings.getString("wms_url") + '&WIDTH=256&HEIGHT=256&bbox={bbox-epsg-3857}&CRS=EPSG:3857'
+                let urlToGo = appSettings.getString("wms_url") + '&WIDTH=256&HEIGHT=256'
+                let layer = appSettings.getString("product_id")
+                let wdate = appSettings.getString("wdate");
+
+                // console.log(urlToGo)
+                // this.minDate = appSettings.getString("minDate")
+                // appSettings.setString("wms_url", objLayer.wms_getmap_url);
+                let linkTo = 'https://estation.jrc.ec.europa.eu/eStation2/webservices?SERVICE=WMS&VERSION=1.3.0&REQUEST=GetMap&LAYERS=' + layer + '&date=' + wdate +'&FORMAT=image%2Fjpg&TRANSPARENT=false&time_to_nocache=1622704629174&WIDTH=256&HEIGHT=256&bbox={bbox-epsg-3857}&CRS=EPSG:3857'
+                // let linkTo = urlToGo
+                console.log(urlToGo)
                 this.args.map.removeLayer('wms-test-layer')
                 this.args.map.removeSource('wms-test-source')
                 this.args.map.addSource('wms-test-source', {
@@ -382,12 +437,47 @@
                         },
                     },
                     'aeroway-line'
-                );
-                this.srcLegend = 'https://estation.jrc.ec.europa.eu/eStation2/webservices?SERVICE=WMS&REQUEST=GetLegendGraphic&LAYERS=' + layer
-                console.log(linkTo)
+                )
+
+
+                let legendUrl = appSettings.getString("legend_url")
+                console.log("*** legend URL ***")
+                console.log(legendUrl)
+
+                Http.request({
+                    // url: 'https://estation.jrc.ec.europa.eu/eStation2/mobile-app/legend-html?product_id=layer_modis-fapar_1.0_10dmax',
+                    url: legendUrl,
+                    method: 'GET'
+                }).then(
+                    (response) => {
+                        // Argument (response) is HttpResponse
+                        // console.log(`Response Status Code: ${response.statusCode}`)
+                        // console.log(`Response Headers:`, response.headers)
+                        // console.log(`Response Content: ${response.content}`)
+                        let htmlLegendObj = JSON.parse(`${response.content}`)
+                        let htmlCode = htmlLegendObj.html.legendHTMLVertical
+                        htmlCode = htmlCode.replace(/white/gi, 'transparent')
+                        htmlCode = htmlCode.replace(/font-size:15px/gi, 'font-size:12px')
+                        htmlCode = htmlCode.replace(/font-size:12px/gi, 'font-size:10px')
+                        htmlCode = htmlCode.replace(/line-height:12px/gi, 'line-height:10px')
+                        htmlCode = htmlCode.replace(/height:12px/gi, 'height:10px')
+                        
+                        self.htmlLegend = '<style> span {font-size:10px;} td {font-size:10px;} </style>' + htmlCode
+                        console.log(self.htmlLegend)
+
+                },
+                e => {}
+                )
+
+                let layerTitle = appSettings.getString("descriptive_name")
                 this.titleApp = layerTitle
-                this.wdate = wDate
-                this.selectedDate = wDate
+
+
+                // this.srcLegend = 'https://estation.jrc.ec.europa.eu/eStation2/webservices?SERVICE=WMS&REQUEST=GetLegendGraphic&LAYERS=' + layer
+                // console.log(linkTo)
+                // this.titleApp = layerTitle
+                // this.wdate = wDate
+                // this.selectedDate = wDate
 
                 this.args.map.setCenter(
                     {
@@ -409,7 +499,45 @@
                 )
 
             },
+            selectedIndexDateChanged: function (e) {
+                console.log('*** date changed ***') 
+                console.log(e.value)
+                appSettings.setNumber("dateIndex", e.value);
+                console.log(this.listAvailableDates[e.value])
+                appSettings.setString("wdate", this.listAvailableDates[e.value]);
+                this.selectedDate = this.listAvailableDates[e.value]
+
+            },
+            selectedIndexCategoryChanged: function (e) {
+                console.log('*** categoy changed ***')
+                console.log(e.value)
+                // console.log(this.selectedIndexCategory)
+                appSettings.setNumber("categoryIndex", e.value);
+                this.selectedIndexCategory = e.value
+                let cat = this.categories[e.value]
+                // this.categoryName = this.categories[e.value].toUpperCase()
+                this.categoryName = this.categories[e.value]
+                appSettings.setString("categoryName", this.categoryName);
+
+                let arr = this.collections[cat]
+
+                this.listOfItemsLayer = []
+                this.listOfItemsLayerTitle = [] 
+                this.listOfItemsLayerExtent = [] 
+
+                for (let l of arr) {
+                    // console.log(l)
+                    // console.log(l.Title)
+                    this.listOfItemsLayer.push(l.descriptive_name)
+                    this.listOfItemsLayerTitle.push(l.descriptive_name) 
+                    this.listOfItemsLayerExtent.push(l.descriptive_name) 
+                }
+
+
+            },
+
             selectedIndexLayerChanged: function (e) {
+                /*
                 console.log('*** valori letti da preferenze ***')
                 const layer = appSettings.getString("layerName") 
                 console.log("*** layer ***")
@@ -420,42 +548,95 @@
                 const wDate = appSettings.getString("wDate") 
                 console.log("*** wDate ***")
                 console.log(wDate)        
-
-                if (!this.beforeMount) {
-                console.log("set appSettings layer")
+                */
+                let self = this
                 console.log(e.value)
-                console.log(this.listOfItemsLayer[e.value])
-                console.log(this.listOfItemsLayerTitle[e.value])
+                console.log(this.collections[this.categoryName][e.value])
+                let objLayer = this.collections[this.categoryName][e.value]
+                appSettings.setString("wms_url", objLayer.wms_getmap_url);
+                appSettings.setString("legend_url", objLayer.legend_url);
+                appSettings.setString("product_id", objLayer.product_id)
+                appSettings.setString("descriptive_name", objLayer.descriptive_name)
+                appSettings.setNumber("layerIndex", e.value);
 
-                let d = this.listOfItemsLayerExtent[e.value].split('/')
-                this.minDate = d[0].substring(0,4) + '-' + d[0].substring(4,6) + '-' + d[0].substring(6,8)
-                this.maxDate = d[1].substring(0,4) + '-' + d[1].substring(4,6) + '-' + d[1].substring(6,8)
-                appSettings.setString("wDate", this.maxDate);
 
-                appSettings.setString("minDate", this.minDate);
-                appSettings.setString("maxDate", this.maxDate);
+                let layerTitle = appSettings.getString("descriptive_name")
+                this.titleApp = layerTitle
 
-                this.layerChanged = true
-                if (layer !== this.listOfItemsLayer[e.value]) {
-                    appSettings.setNumber("layerIndex", e.value);
-                    appSettings.setString("layerName", this.listOfItemsLayer[e.value]);
-                    appSettings.setString("layerTitle", this.listOfItemsLayerTitle[e.value]);
-                    this.titleApp = this.listOfItemsLayerTitle[e.value]
-                    // appSettings.setString("layerMinDate", this.listOfItemsLayerTitle[e.value]);
-                    console.log(this.listOfItemsLayerExtent[e.value])
-                    this.layerTitle = this.listOfItemsLayerTitle[e.value]
-                    this.layerName = this.listOfItemsLayer[e.value]
+
+                let urlInfo = 'https://estation.jrc.ec.europa.eu/eStation2/mobile-app/describeLayer?product_id=' + objLayer.product_id
+
+                Http.request({
+                    url: urlInfo,
+                    method: 'GET'
+                }).then(
+                    (response) => {
+                        let strTmp =  `${response.content}`
+                        /*
+                        strTmp = strTmp.replace(/\"\[/,'[')
+                        strTmp = strTmp.replace(/\]\"/,']')
+                        */
+                        console.log(strTmp)
+                        console.log('^^^^^^')
+                        let infoObj = JSON.parse(strTmp)
+                        console.log('????')
+                        console.log(infoObj.product.dates)
+                        strTmp = infoObj.product.dates
+                        strTmp = strTmp.replace(/\'/g,'\"')
+                        console.log(strTmp)
+                        self.listAvailableDates = JSON.parse(strTmp)
+                        /*
+                        let arrTmp = []
+                        for (let d of infoObj.product.dates) {
+                            console.log(d)
+                            arrTmp.push(d)
+                        }
+                        self.listAvailableDates = arrTmp
+                        */
+                },
+                e => {}
+                )
+
+
+
+/*
+                if (!this.beforeMount) {
+                    console.log("set appSettings layer")
+                    console.log(e.value)
+                    console.log(this.listOfItemsLayer[e.value])
+                    console.log(this.listOfItemsLayerTitle[e.value])
+
+                    let d = this.listOfItemsLayerExtent[e.value].split('/')
+                    this.minDate = d[0].substring(0,4) + '-' + d[0].substring(4,6) + '-' + d[0].substring(6,8)
+                    this.maxDate = d[1].substring(0,4) + '-' + d[1].substring(4,6) + '-' + d[1].substring(6,8)
                     appSettings.setString("wDate", this.maxDate);
-                    this.selectedDate = this.maxDate
-                    // this.changeLayer()                    
-                } else {
-                    console.log('*** Stesso layer ***')
-                    console.log('*** Imposto data  ***')
-                    console.log(wDate)
-                    appSettings.setString("wDate", wDate);
-                    this.selectedDate = wDate
+
+                    appSettings.setString("minDate", this.minDate);
+                    appSettings.setString("maxDate", this.maxDate);
+
+                    this.layerChanged = true
+                    if (layer !== this.listOfItemsLayer[e.value]) {
+                        appSettings.setNumber("layerIndex", e.value);
+                        appSettings.setString("layerName", this.listOfItemsLayer[e.value]);
+                        appSettings.setString("layerTitle", this.listOfItemsLayerTitle[e.value]);
+                        this.titleApp = this.listOfItemsLayerTitle[e.value]
+                        // appSettings.setString("layerMinDate", this.listOfItemsLayerTitle[e.value]);
+                        console.log(this.listOfItemsLayerExtent[e.value])
+                        this.layerTitle = this.listOfItemsLayerTitle[e.value]
+                        this.layerName = this.listOfItemsLayer[e.value]
+                        appSettings.setString("wDate", this.maxDate);
+                        this.selectedDate = this.maxDate
+                        // this.changeLayer()                    
+                    } else {
+                        console.log('*** Stesso layer ***')
+                        console.log('*** Imposto data  ***')
+                        console.log(wDate)
+                        appSettings.setString("wDate", wDate);
+                        this.selectedDate = wDate
+                    }
                 }
-                }
+*/
+
             },
             onDrawerButtonTap() {
                 utils.showDrawer();
