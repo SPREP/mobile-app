@@ -38,7 +38,6 @@
 <script>
   import * as utils from "~/shared/utils";
   import { SelectedPageService } from "../shared/selected-page-service";
-  import Settings from "./Settings";
   import MapBox from "./MapBox";
   const appSettings = require("@nativescript/core/application-settings");
 
@@ -56,7 +55,7 @@
                     console.log(layer)        
                 } else {
                     console.log("indefinito")
-                    this.onNavigationItemTap(Settings)
+                    // this.onNavigationItemTap(Settings)
                     return
                 }
 
@@ -79,7 +78,7 @@
                     console.log(wd)        
                 } else {
                     console.log("indefinito")
-                    this.onNavigationItemTap(Settings)
+                    // this.onNavigationItemTap(Settings)
                     return
                 }
                 this.wdate = wDate

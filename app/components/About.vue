@@ -50,7 +50,6 @@
   import * as utils from "~/shared/utils";
   import { SelectedPageService } from "../shared/selected-page-service";
   import MapBox from "./MapBox";
-  import Settings from "./Settings";
 
   export default {
     mounted() {
@@ -66,7 +65,7 @@
         this.onNavigationItemTap(MapBox)
       },
       goChange: function () {
-        this.onNavigationItemTap(Settings)
+        // this.onNavigationItemTap(Settings)
       },
       onNavigationItemTap(component) {
         this.$navigateTo(component, {

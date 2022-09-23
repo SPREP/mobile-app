@@ -22,13 +22,6 @@
                     <Label col="0" text.decode="&#xf279;" class="h3 nt-icon fas"/>
                     <Label col="1" text="Map" class="h3 p-r-10"/>
                 </GridLayout>
-                <GridLayout columns="auto, *"
-                            :class="'nt-drawer__list-item' + (selectedPage === 'Settings' ? ' -selected': '')"
-                            @tap="onNavigationItemTap(Settings)">
-                    <Label col="0" text.decode="&#xf013;" class="h3 nt-icon fas"/>
-                    <Label col="1" text="Settings" class="h3 p-r-10"/>
-                </GridLayout>
-
 
                 <StackLayout class="hr"/>
                 <GridLayout columns="auto, *"
@@ -47,7 +40,6 @@
 <script>
   import About from "./About";
   import Calendar from "./Calendar";
-  import Settings from "./Settings";
   import MapBox from "./MapBox";
   import * as utils from "~/shared/utils";
   import { SelectedPageService } from "~/shared/selected-page-service";
@@ -66,7 +58,6 @@
       return {
         About: About,
         Calendar: Calendar,
-        Settings: Settings,
         MapBox: MapBox,
         selectedPage: ""
       };
@@ -74,7 +65,6 @@
     components: {
       // Home,
       Calendar,
-      Settings,
       MapBox,
     },
     methods: {

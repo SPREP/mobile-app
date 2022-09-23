@@ -80,7 +80,7 @@
                     let objRet = JSON.parse(`${response.content}`)
                     let objStruct = {}
 
-                    console.log(objRet.products.length)
+                    // console.log(objRet.products.length)
                     for (let o of objRet.products) {
                       if (!objStruct[o.category]) {
                         objStruct[o.category] = []
@@ -88,16 +88,16 @@
                       objStruct[o.category].push(o)
                       // console.log(o.category)
                     }
-                    console.log(objStruct)
-                    console.log(Object.keys(objStruct))
+                    // console.log(objStruct)
+                    // console.log(Object.keys(objStruct))
 
                     this.collections = objStruct
                     this.categories = Object.keys(objStruct)
 
-                    for (let c of Object.keys(objStruct)) {
-                      console.log(c)
+                    // for (let c of Object.keys(objStruct)) {
+                      //console.log(c)
                       // console.log(objStruct[o.category])
-                    }
+                    // }
            },
             e => {}
             )
