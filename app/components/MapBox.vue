@@ -48,16 +48,16 @@
                 </Mapbox>
     </ContentView>
 
-    <Label v-if="!showInfo" :text="categoryName.toUpperCase()" left="0" top="0" width="100%" height="30" color="rgb(113,250,35)" class="h3 text-center" backgroundColor="rgba(0, 0, 0, 1)"/>  
-    <Label v-if="!showInfo" :text="titleApp" left="0" top="30" width="100%" height="30" color="rgb(220,157,251)" class="h3 text-center" backgroundColor="rgba(0, 0, 0, .8)"/>  
-    <Label v-if="!showInfo" :text="selectedDate" left="0" top="60" width="100%" height="30" color="rgb(252,254,123)" class="h3 text-center" backgroundColor="rgba(0, 0, 0, .8)"/>  
+    <Label v-if="!showInfo && categoryName " :text="categoryName.toUpperCase()" left="0" top="0" width="100%" height="30" color="rgb(113,250,35)" class="h3 text-center" backgroundColor="rgba(0, 0, 0, 1)"/>  
+    <Label v-if="!showInfo && categoryName " :text="titleApp" left="0" top="30" width="100%" height="30" color="rgb(220,157,251)" class="h3 text-center" backgroundColor="rgba(0, 0, 0, .8)"/>  
+    <Label v-if="!showInfo && categoryName " :text="selectedDate" left="0" top="60" width="100%" height="30" color="rgb(252,254,123)" class="h3 text-center" backgroundColor="rgba(0, 0, 0, .8)"/>  
 
     <!--
     <Image src="~/shared/listIcon.png"  v-if="!showLayers && !showInfo && !showLegend && false" :left="15" :top="65" width="30" height="40"  @tap="showLegendView" stretch="fill" />
     -->
 
 <!-- <WebView :src="htmlLegend" left="10" top="65" :height="topLayersIcon-400" :width="leftLayersIcon-220" />    -->
-<WebView :src="htmlLegend" left="0" top="90" :height="250" :width="100" />    
+<WebView v-if="!showInfo && categoryName" :src="htmlLegend" left="0" top="90" :height="250" :width="100" />    
 
 <!--
     <Label v-if="!showPickDate  && !showInfo" :text="wdate" :left="leftLayersIcon-70" top="95" width="130" height="40"  class="text-center pick-date" @tap="showPickDateSelection" color="black" backgroundColor="rgba(200, 200, 200, .6)"/>
@@ -81,11 +81,11 @@
 <!--
     <Label :text="connectionType" :left="leftLayersIcon/2-50" :top="topLayersIcon" width="100" height="40"  class="text-center"  color="black" backgroundColor="rgba(200, 200, 200, .6)"/>
 -->
-    <Image src="~/shared/infoIcon.png" v-if="!showLayers && !showInfo" left="30" :top="topLayersIcon" color="rgba(25, 25, 200, .6)" width="40" @tap="showInfo = !showInfo"/>
+    <Image src="~/shared/infoIcon.png" v-if="!showLayers && !showInfo" left="30" :top="topLayersIcon" color="rgba(25, 25, 200, .6)" width="40" height="40" @tap="showInfo = !showInfo"/>
 
     <Image src="~/shared/layers2.png"  v-if="!showLayers && !showInfo" :left="leftLayersIcon" :top="topLayersIcon" width="40" height="40" @tap="showLayersChoice" stretch="fill" />
 
-    <Image v-if="!showPickDate  && !showInfo" src="~/shared/pickdateIcon.png"  :left="leftLayersIcon/2+20" :top="topLayersIcon" width="35" height="35" @tap="showPickDateSelection" stretch="fill" />
+    <Image v-if="!showPickDate  && !showInfo" src="~/shared/pickdateIcon.png"  :left="leftLayersIcon/2+20" :top="topLayersIcon" width="40" height="40" @tap="showPickDateSelection" stretch="fill" />
 
 
 </AbsoluteLayout>
@@ -236,8 +236,7 @@
         },
         methods: {
             checkChange: function () {
-                console.log('*** CheckChange')
-
+                // console.log('*** CheckChange')
                 if (this.lastDateChange !== -1) {
                     const millis = Date.now() - this.lastDateChange
                     if (millis > 1000) {
@@ -529,10 +528,17 @@
                         }
                         self.listAvailableDates = arrTmp
 
-                        appSettings.setNumber("dateIndex", 0);
-                        console.log(self.listAvailableDates[0])
-                        appSettings.setString("wdate", self.listAvailableDates[0]);
-                        self.selectedDate = self.listAvailableDates[0]
+                        const currentIndex = self.listAvailableDates.length - 1
+
+                        appSettings.setNumber("dateIndex", currentIndex);
+                        console.log(self.listAvailableDates[currentIndex])
+                        appSettings.setString("wdate", self.listAvailableDates[currentIndex]);
+                        self.selectedDate = self.listAvailableDates[currentIndex]
+
+                        self.selectedIndexDate = currentIndex
+                        appSettings.setNumber("dateIndex", currentIndex)
+
+
                 },
                 e => {}
                 )
