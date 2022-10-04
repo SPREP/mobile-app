@@ -13,23 +13,23 @@
 
 <AbsoluteLayout backgroundColor="#3c495e">
 
-    <ContentView v-if="showInfo" height="100%" width="100%" left="0" top="0" backgroundColor="rgba(255, 255, 255, .85)">
+    <ContentView v-if="showInfo" height="100%" width="100%" left="0" top="0" backgroundColor="rgb(255, 255, 255)">
       <StackLayout>
             <!-- <Label class="h3 description-label text-center " text=" " height="30"  /> -->
+
             <Image src="~/shared/logoAbout.png" />
             <Label class="h3 description-label text-center " text=" "  height="50"  />
-            <Label class="h2 description-label text-center " text="Climate Station"  height="40"  />
-            <Label class="h2 description-label text-center " text="Mobile App"  height="40"  />
+            <Label class="h2 description-label text-center " text="eStation Mobile App"  height="40"  />
             <Label class="h3 description-label text-center " text=" "  height="30"  />
             <Label class="h3 description-label text-center " text="The Joint Research Centre "  height="30"  />
             <Label class="h3 description-label text-center " text="of the" height="30"  />
             <Label class="h3 description-label text-center " text="European Commission" height="50"  />
-            <Label class="h5 description-label text-center " text="(ver. 0.1.02 02/09/2022)" height="30"  />
-            <Label class="h3 description-label text-center " text="" height="50"  />
-            <Label class="h3 text-center " text="Close" height="30" width="200" color="white" backgroundColor="blue" @tap="showInfo=false" />
+            <Label class="h5 description-label text-center " text="(ver. 0.1.12 04/10/2022)" height="30"  />
+            <Label class="h3 description-label text-center " text="" height="30"  />
+            <Label class="h2 text-center " text="Close" height="45" width="250" color="white" backgroundColor="blue" @tap="showInfo=false" />
         </StackLayout>
     </ContentView>
-    <Image v-if="showInfo" src="~/shared/footerAbout.png" stretch="aspectFit" :top="topLayersIcon-20" width="100%" height="130" left="0"/>
+    <Image v-if="showInfo" src="~/shared/footerAbout.png" stretch="aspectFit" :top="topLayersIcon-40" width="100%" height="150" left="0"/>
 
     <ContentView v-if="!showInfo" height="100%" width="100%" left="0" top="0">
                 <Mapbox
@@ -47,6 +47,11 @@
                     @mapReady="onMapReady($event)">
                 </Mapbox>
     </ContentView>
+
+    <ContentView height="100" width="100%" left="0" :top="windowH/2">
+        <ActivityIndicator :busy="waitingFor"  />
+    </ContentView>
+
 
     <Label v-if="!showInfo && categoryName " :text="categoryName.toUpperCase()" left="0" top="0" width="100%" height="30" color="rgb(113,250,35)" class="h3 text-center" backgroundColor="rgba(0, 0, 0, 1)"/>  
     <Label v-if="!showInfo && categoryName " :text="titleApp" left="0" top="30" width="100%" height="30" color="rgb(220,157,251)" class="h3 text-center" backgroundColor="rgba(0, 0, 0, .8)"/>  
@@ -117,7 +122,7 @@
   const appSettings = require("@nativescript/core/application-settings");
 
      export default {
-        props: { collections: Object,  categories: Array},
+        props: { collections: Object,  categories: Array, waitingFor: Boolean},
         data () {
             let layer = null
             let category = null
@@ -168,6 +173,7 @@
                 topLayersIcon:100,
                 topListPicker:100,
                 leftLayersIcon:100,
+                windowH: 100,
                 titleApp: null,
                 connectionType: '',
                 selectedIndexDate: null,
@@ -202,6 +208,9 @@
             this.topLayersIcon = screen.mainScreen.heightDIPs - 140
             this.leftLayersIcon = screen.mainScreen.widthDIPs - 70
             this.topListPicker = screen.mainScreen.heightDIPs - 250
+
+            this.windowH = screen.mainScreen.heightDIPs
+
 
             try {
                 let strTmp = appSettings.getString("available_dates")
@@ -337,7 +346,7 @@
                 let self = this
                 this.lastDateChange = -1
                 this.showPickDate = false
-
+                self.waitingFor = true
                 // let urlToGo = appSettings.getString("wms_url") + '&WIDTH=256&HEIGHT=256&bbox={bbox-epsg-3857}&CRS=EPSG:3857'
                 let urlToGo = appSettings.getString("wms_url") + '&WIDTH=256&HEIGHT=256'
                 let layer = appSettings.getString("product_id")
@@ -400,6 +409,7 @@
                         
                         self.htmlLegend = '<style> span {font-size:10px;} td {font-size:10px;} </style>' + htmlCode
                         // console.log(self.htmlLegend)
+                        self.waitingFor = false
 
                 },
                 e => {}

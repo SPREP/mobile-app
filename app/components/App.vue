@@ -6,7 +6,7 @@
         </StackLayout>
         <Frame ~mainContent ref="drawerMainContent">
     -->
-            <MapBox :categories="categories" :collections="collections"/>
+            <MapBox :categories="categories" :collections="collections" :waitingFor="waitingFor"/>
 <!--        </Frame> 
     </RadSideDrawer>
 -->
@@ -26,10 +26,13 @@
       return {
         categories: null,
         collections: null,
+        waitingFor: false,
         transition: new SlideInOnTopTransition()
       }
     },
     mounted() {
+      let self = this
+      this.waitingFor = true
       // SelectedPageService.getInstance().updateSelectedPage("About");
       // Starts monitoring the network for changes
       const type = Connectivity.getConnectionType()
@@ -91,9 +94,10 @@
                     // console.log(objStruct)
                     // console.log(Object.keys(objStruct))
 
-                    this.collections = objStruct
-                    this.categories = Object.keys(objStruct)
+                    self.collections = objStruct
+                    self.categories = Object.keys(objStruct)
 
+                    self.waitingFor = false
                     // for (let c of Object.keys(objStruct)) {
                       //console.log(c)
                       // console.log(objStruct[o.category])

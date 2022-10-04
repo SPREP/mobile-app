@@ -19,6 +19,7 @@
       <Button marginTop="0" height="40" class="h3 text-center" backgroundColor="blue" color="white" text="Change settings" @tap="onButtonTap" />
 
     </FlexboxLayout>
+
 <!--
     <ScrollView marginTop="-100">
         <StackLayout orientation="vertical" top="10" width="350" height="500">
